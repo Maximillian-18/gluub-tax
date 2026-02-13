@@ -61,7 +61,7 @@ export default function Contact() {
     <div className="min-h-screen bg-black text-white pt-32 pb-12">
       <div className="max-w-4xl mx-auto px-8">
         <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-12">
-          C<span className="text-purple-500">O</span>NTACT
+          CONTACT
         </h1>
 
         <div className="grid md:grid-cols-2 gap-12">

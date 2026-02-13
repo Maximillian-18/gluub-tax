@@ -25,7 +25,7 @@ export default function Navigation() {
       </div>
 
       <div className="flex-1 flex justify-end items-center gap-6">
-        <Link href="#" className="text-gray-300 hover:text-white text-sm font-medium uppercase transition-colors">
+        <Link href="/login" className="text-gray-300 hover:text-white text-sm font-medium uppercase transition-colors">
           Login
         </Link>
         <Link 
