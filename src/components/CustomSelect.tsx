@@ -46,7 +46,7 @@ export function CustomSelect({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex items-center justify-between gap-2 w-full px-4 py-2 border border-[#2ecc71] bg-transparent rounded-md text-[#2ecc71] text-base font-medium",
+          "flex items-center justify-between gap-2 w-full px-3 py-2 h-9 border border-[#2ecc71] bg-transparent rounded-md text-[#2ecc71] text-base font-medium",
           "hover:bg-[#2ecc71]/10 focus:outline-none focus:ring-2 focus:ring-[#2ecc71]/50",
           "transition-colors"
         )}
@@ -78,13 +78,13 @@ export function CustomSelect({
                 setIsOpen(false);
               }}
               className={cn(
-                "flex items-center justify-between w-full px-3 py-2 text-left text-[#2ecc71]",
+                "flex items-center justify-between w-full px-3 py-1.5 text-left text-[#2ecc71]",
                 "hover:bg-[#2ecc71]/20 focus:outline-none",
                 value === option.value && "bg-[#2ecc71]/20 font-bold"
               )}
             >
               <span>{option.label}</span>
-              {value === option.value && <Check className="w-4 h-4" />}
+              {value === option.value && <Check className="w-3 h-3" />}
             </button>
           ))}
         </div>

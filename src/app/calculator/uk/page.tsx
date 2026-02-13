@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 import { Plus, X } from "lucide-react";
 
 const numberInputClass = "flex-1 px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
@@ -154,7 +155,7 @@ export default function UKCalculator() {
                 { value: "northern-ireland", label: "Northern Ireland" },
               ]}
               placeholder="Select region"
-              className="w-full md:w-[160px]"
+              className="w-full md:w-[200px]"
             />
           </div>
 
@@ -566,7 +567,7 @@ export default function UKCalculator() {
         </div>
       </main>
 
-      <footer className="w-full h-24 bg-[#0a1f15]"></footer>
+      <Footer />
     </div>
   );
 }

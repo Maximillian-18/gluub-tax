@@ -1,0 +1,51 @@
+import Footer from "@/components/Footer";
+
+export default function FAQ() {
+  const faqs = [
+    {
+      q: "Is this calculator free?",
+      a: "Yes! Completely free, no sign-up required."
+    },
+    {
+      q: "How accurate is it?",
+      a: "We use official HMRC tax rates for 2025/26. However, individual circumstances may vary, so always check with a tax professional for complex situations."
+    },
+    {
+      q: "Do you store my salary information?",
+      a: "No! We don't store any of your data. All calculations happen in your browser and disappear when you close the page."
+    },
+    {
+      q: "Can I calculate my tax for previous years?",
+      a: "Currently we only support 2025-2026, but we're working on adding historical tax years."
+    },
+    {
+      q: "What about other countries?",
+      a: "Right now we focus on the UK (England, Scotland, Wales & Northern Ireland). We're planning to add calculators for Germany, France, Canada, and the USA soon!"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#05100a] text-[#2ecc71] flex flex-col">
+      <main className="flex-1 px-4 md:px-8 py-12 pt-24 md:pt-28 max-w-4xl mx-auto w-full">
+        
+        {/* FAQ Section */}
+        <section className="mb-16">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#2ecc71] mb-8 text-center">
+            Frequently Asked Questions
+          </h1>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20">
+                <h2 className="font-bold text-lg mb-2">Q: {faq.q}</h2>
+                <p className="text-[#2ecc71]/80">A: {faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
