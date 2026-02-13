@@ -2,13 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -22,7 +16,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d2818] text-[#2ecc71] flex flex-col">
+    <div className="min-h-screen bg-[#05100a] text-[#2ecc71] flex flex-col">
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-8">
         <div className="text-center">
@@ -34,36 +28,22 @@ export default function Home() {
           {/* Country Selector and Calculate Button */}
           <div className="flex items-center justify-center gap-4 flex-wrap">
             {/* Country Dropdown */}
-            <Select value={selectedCountry} onValueChange={setSelectedCountry}>
-              <SelectTrigger className="px-4 py-2 w-[220px] text-[#2ecc71] border-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/10 focus:ring-[#2ecc71] text-lg font-bold">
-                <SelectValue placeholder="Select country" />
-              </SelectTrigger>
-              <SelectContent position="popper" side="bottom" sideOffset={4} className="bg-[#0d2818] border-[#2ecc71]">
-                <SelectItem
-                  value="united-kingdom"
-                  className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71] font-bold"
-                >
-                  United Kingdom
-                </SelectItem>
-                <SelectItem
-                  value="germany"
-                  className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71] font-bold"
-                >
-                  Germany
-                </SelectItem>
-                <SelectItem
-                  value="france"
-                  className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71] font-bold"
-                >
-                  France
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <CustomSelect
+              value={selectedCountry}
+              onValueChange={setSelectedCountry}
+              options={[
+                { value: "united-kingdom", label: "United Kingdom" },
+                { value: "germany", label: "Germany" },
+                { value: "france", label: "France" },
+              ]}
+              placeholder="Select country"
+              className="w-[220px]"
+            />
 
             {/* Calculate Button */}
             <Button 
               onClick={handleCalculate}
-              className="px-4 py-2 bg-[#f1c40f] text-[#0d2818] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
+              className="px-4 py-2 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
             >
               Calculate
             </Button>
@@ -72,7 +52,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full h-24 bg-[#1a4d2e]"></footer>
+      <footer className="w-full h-24 bg-[#0a1f15]"></footer>
     </div>
   );
 }

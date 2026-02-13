@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Navigation() {
   return (
-    <nav className="flex items-center justify-between w-full px-3 md:px-12 py-3 md:py-5 bg-[#0d2818]/90 backdrop-blur-sm fixed top-0 left-0 right-0 z-[100]">
+    <nav className="flex items-center justify-between w-full px-3 md:px-12 py-3 md:py-5 bg-[#05100a]/90 backdrop-blur-sm fixed top-0 left-0 right-0 z-[100]">
       <Link href="/" className="text-lg md:text-2xl font-bold text-[#2ecc71] tracking-tight ml-2 md:ml-12">
         Gluub
       </Link>
