@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -7,8 +9,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
+  const [selectedCountry, setSelectedCountry] = useState("united-kingdom");
+  const router = useRouter();
+
+  const handleCalculate = () => {
+    if (selectedCountry === "united-kingdom") {
+      router.push("/calculator/uk");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0d2818] text-[#2ecc71] flex flex-col">
       {/* Main Content */}
@@ -22,7 +34,7 @@ export default function Home() {
           {/* Country Selector and Calculate Button */}
           <div className="flex items-center justify-center gap-4 flex-wrap">
             {/* Country Dropdown */}
-            <Select defaultValue="united-kingdom">
+            <Select value={selectedCountry} onValueChange={setSelectedCountry}>
               <SelectTrigger className="px-4 py-2 w-[220px] text-[#2ecc71] border-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/10 focus:ring-[#2ecc71] text-lg font-bold">
                 <SelectValue placeholder="Select country" />
               </SelectTrigger>
@@ -49,9 +61,12 @@ export default function Home() {
             </Select>
 
             {/* Calculate Button */}
-            <button className="px-4 py-2 bg-[#f1c40f] text-[#0d2818] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg">
+            <Button 
+              onClick={handleCalculate}
+              className="px-4 py-2 bg-[#f1c40f] text-[#0d2818] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
+            >
               Calculate
-            </button>
+            </Button>
           </div>
         </div>
       </main>
