@@ -8,15 +8,15 @@ export default function Navigation() {
       </Link>
 
       <div className="flex items-center gap-2 md:gap-8 mr-2 md:mr-12">
-        <span className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide">
+        <Link href="/about" className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide hover:opacity-80">
           About
-        </span>
-        <span className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide">
+        </Link>
+        <Link href="/info" className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide hover:opacity-80">
           Info
-        </span>
-        <span className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide">
+        </Link>
+        <Link href="/faq" className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide hover:opacity-80">
           FAQ
-        </span>
+        </Link>
       </div>
     </nav>
   );

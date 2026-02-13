@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState("united-kingdom");
@@ -52,7 +53,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full h-24 bg-[#0a1f15]"></footer>
+      <Footer />
     </div>
   );
 }
