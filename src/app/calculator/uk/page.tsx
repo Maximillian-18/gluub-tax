@@ -4,13 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
 
@@ -146,29 +140,22 @@ export default function UKCalculator() {
       <main className="flex-1 flex flex-col items-center px-4 md:px-8 py-8 md:py-12 pt-20 md:pt-24 gap-8 md:gap-12">
         {/* Form Section */}
         <div className="w-full max-w-2xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-[#2ecc71]">
               2025 Income tax calculator
             </h1>
-            <Select value={region} onValueChange={setRegion}>
-              <SelectTrigger className="px-4 py-2 w-full md:w-[160px] text-[#2ecc71] border-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/10 focus:ring-[#2ecc71] text-base font-medium">
-                <SelectValue placeholder="Select region" />
-              </SelectTrigger>
-              <SelectContent position="popper" side="bottom" sideOffset={4} className="bg-[#0d2818] border-[#2ecc71]">
-                <SelectItem value="england" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                  England
-                </SelectItem>
-                <SelectItem value="scotland" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                  Scotland
-                </SelectItem>
-                <SelectItem value="wales" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                  Wales
-                </SelectItem>
-                <SelectItem value="northern-ireland" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                  Northern Ireland
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <CustomSelect
+              value={region}
+              onValueChange={setRegion}
+              options={[
+                { value: "england", label: "England" },
+                { value: "scotland", label: "Scotland" },
+                { value: "wales", label: "Wales" },
+                { value: "northern-ireland", label: "Northern Ireland" },
+              ]}
+              placeholder="Select region"
+              className="w-full md:w-[160px]"
+            />
           </div>
 
           <div className="space-y-6">
@@ -186,22 +173,17 @@ export default function UKCalculator() {
                   placeholder="Enter gross income"
                   className={numberInputClass}
                 />
-                <Select value={incomeFrequency} onValueChange={setIncomeFrequency}>
-                  <SelectTrigger className="w-full sm:w-[140px] text-[#2ecc71] border-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/10 focus:ring-[#2ecc71] text-base font-medium">
-                    <SelectValue placeholder="Per year" />
-                  </SelectTrigger>
-                  <SelectContent position="popper" side="bottom" sideOffset={4} className="bg-[#0d2818] border-[#2ecc71]">
-                    <SelectItem value="per-year" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                      Per year
-                    </SelectItem>
-                    <SelectItem value="per-month" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                      Per month
-                    </SelectItem>
-                    <SelectItem value="per-week" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                      Per week
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <CustomSelect
+                  value={incomeFrequency}
+                  onValueChange={setIncomeFrequency}
+                  options={[
+                    { value: "per-year", label: "Per year" },
+                    { value: "per-month", label: "Per month" },
+                    { value: "per-week", label: "Per week" },
+                  ]}
+                  placeholder="Per year"
+                  className="w-full sm:w-[140px]"
+                />
               </div>
             </div>
 
@@ -210,19 +192,16 @@ export default function UKCalculator() {
               <label className="block text-lg font-bold text-[#2ecc71] mb-2">
                 Tax year
               </label>
-              <Select value={taxYear} onValueChange={setTaxYear}>
-                <SelectTrigger className="w-[180px] text-[#2ecc71] border-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/10 focus:ring-[#2ecc71] text-base font-medium">
-                  <SelectValue placeholder="Tax year" />
-                </SelectTrigger>
-                <SelectContent position="popper" side="bottom" sideOffset={4} className="bg-[#0d2818] border-[#2ecc71]">
-                  <SelectItem value="2025-2026" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    2025 - 2026
-                  </SelectItem>
-                  <SelectItem value="2024-2025" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    2024 - 2025
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+            <CustomSelect
+              value={taxYear}
+              onValueChange={setTaxYear}
+              options={[
+                { value: "2025-2026", label: "2025 - 2026" },
+                { value: "2024-2025", label: "2024 - 2025" },
+              ]}
+              placeholder="Tax year"
+              className="w-[180px]"
+            />
             </div>
 
             {/* Tax Code */}
@@ -306,28 +285,19 @@ export default function UKCalculator() {
               <label className="block text-lg font-bold text-[#2ecc71] mb-2">
                 Student Loan Plan
               </label>
-              <Select value={studentLoan} onValueChange={setStudentLoan}>
-                <SelectTrigger className="w-[200px] text-[#2ecc71] border-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/10 focus:ring-[#2ecc71] text-base font-medium">
-                  <SelectValue placeholder="Select plan" />
-                </SelectTrigger>
-                <SelectContent position="popper" side="bottom" sideOffset={4} className="bg-[#0d2818] border-[#2ecc71]">
-                  <SelectItem value="none" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    None
-                  </SelectItem>
-                  <SelectItem value="plan1" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    Plan 1
-                  </SelectItem>
-                  <SelectItem value="plan2" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    Plan 2
-                  </SelectItem>
-                  <SelectItem value="plan4" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    Plan 4
-                  </SelectItem>
-                  <SelectItem value="postgrad" className="text-[#2ecc71] focus:bg-[#2ecc71]/20 focus:text-[#2ecc71]">
-                    Postgraduate
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <CustomSelect
+                value={studentLoan}
+                onValueChange={setStudentLoan}
+                options={[
+                  { value: "none", label: "None" },
+                  { value: "plan1", label: "Plan 1" },
+                  { value: "plan2", label: "Plan 2" },
+                  { value: "plan4", label: "Plan 4" },
+                  { value: "postgrad", label: "Postgraduate" },
+                ]}
+                placeholder="Select plan"
+                className="w-[200px]"
+              />
             </div>
 
             {/* Allowances */}
