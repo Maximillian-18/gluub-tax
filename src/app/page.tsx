@@ -1,43 +1,39 @@
-import Link from "next/link";
+"use client";
+
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 export default function Home() {
+  const [selectedCountry, setSelectedCountry] = useState("United Kingdom");
+
   return (
-    <div className="min-h-screen bg-black text-white">
-      <main className="min-h-screen flex flex-col items-center justify-center px-8 py-24">
-        <div className="text-center max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#0d2818] text-[#2ecc71] flex flex-col">
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col items-center justify-center px-8">
+        <div className="text-center">
           {/* Main Headline */}
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4 leading-tight">
-            ONE BUSINESS
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-12 leading-tight text-[#2ecc71]">
+            Calculate Take Home Pay
           </h1>
-          
-          {/* Gradient Subheadline */}
-          <h2 className="text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-12 leading-tight bg-gradient-to-r from-purple-400 via-purple-500 to-blue-500 bg-clip-text text-transparent">
-            UNTOLD POSSIBILITIES
-          </h2>
-          
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-16 max-w-3xl mx-auto font-light">
-            MACHNET is a business that can fulfil all your manufacturing needs. 50+ years of manufacturing experience, we delivery on a global scale using the most modern manufacturing processes.
-          </p>
-          
-          {/* CTA Button */}
-          <div className="flex flex-col items-center gap-4">
-            <Link 
-              href="/signup" 
-              className="px-12 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-lg font-bold rounded-lg uppercase tracking-wide hover:from-purple-500 hover:to-purple-600 transition-all duration-300 shadow-xl shadow-purple-500/25 hover:shadow-2xl hover:shadow-purple-500/30 transform hover:-translate-y-1"
-            >
-              START MANUFACTURING
-            </Link>
-            
-            <Link 
-              href="#" 
-              className="text-gray-400 hover:text-white text-sm font-medium uppercase tracking-wide transition-colors"
-            >
-              HOW IT WORKS
-            </Link>
+
+          {/* Country Selector and Calculate Button */}
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            {/* Country Dropdown */}
+            <button className="flex items-center gap-2 text-[#2ecc71] hover:text-white text-lg font-medium transition-colors">
+              <span>{selectedCountry}</span>
+              <ChevronDown className="w-5 h-5" />
+            </button>
+
+            {/* Calculate Button */}
+            <button className="px-6 py-3 bg-[#f1c40f] text-[#0d2818] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg">
+              Calculate
+            </button>
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="w-full h-24 bg-[#1a4d2e]"></footer>
     </div>
   );
 }

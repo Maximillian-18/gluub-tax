@@ -10,8 +10,8 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "MACHNET - Manufacturing Solutions",
-  description: "Global manufacturing with 50+ years of experience. Modern processes for untold possibilities.",
+  title: "Gluub - Calculate Take Home Pay",
+  description: "Calculate your take home pay with our easy-to-use tax calculator.",
 };
 
 export default function RootLayout({
