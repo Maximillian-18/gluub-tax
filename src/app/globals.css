@@ -125,3 +125,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Prevent Radix UI from adding padding-right when dropdown opens */
+html body[data-scroll-locked] {
+  padding-right: 0 !important;
+  overflow: auto !important;
+}
