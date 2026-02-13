@@ -4,7 +4,11 @@ export default function FAQ() {
   const faqs = [
     {
       q: "Is this calculator free?",
-      a: "Yes! Completely free, no sign-up required."
+      a: "Yes! Completely free to use, no sign-up required. We show ads on the site to help support the costs of keeping this service free for everyone."
+    },
+    {
+      q: "Does Ad-block affect my experience?",
+      a: "Nope! Feel free to use an ad-blocker. But if you can disable it to help support the site, we'd really appreciate it!"
     },
     {
       q: "How accurate is it?",
