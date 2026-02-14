@@ -12,7 +12,7 @@ export default function FAQ() {
     },
     {
       q: "How accurate is it?",
-      a: "We use official HMRC tax rates for 2025/26. However, individual circumstances may vary, so always check with a tax professional for complex situations."
+      a: "We use official government tax rates for each country. However, individual circumstances may vary, so always check with a tax professional for complex situations."
     },
     {
       q: "Do you store my salary information?",
@@ -23,8 +23,8 @@ export default function FAQ() {
       a: "Currently we only support 2025-2026, but we're working on adding historical tax years."
     },
     {
-      q: "What about other countries?",
-      a: "Right now we focus on the UK (England, Scotland, Wales & Northern Ireland). We're planning to add calculators for Germany, France, Canada, and the USA soon!"
+      q: "What countries do you support?",
+      a: "We currently support the UK and Germany, with more countries coming soon!"
     }
   ];
 
