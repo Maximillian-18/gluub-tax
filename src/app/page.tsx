@@ -13,6 +13,8 @@ export default function Home() {
   const handleCalculate = () => {
     if (selectedCountry === "united-kingdom") {
       router.push("/calculator/uk");
+    } else if (selectedCountry === "germany") {
+      router.push("/calculator/germany");
     }
   };
 
