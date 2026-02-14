@@ -13,14 +13,6 @@ interface GermanyCalculateRequest {
   state?: string;
 }
 
-const TAX_BRACKETS_2026 = [
-  { min: 0, max: 12348, rate: 0 },
-  { min: 12348, max: 17005, rate: 14 },
-  { min: 17005, max: 66760, rate: 24 },
-  { min: 66760, max: 277825, rate: 42 },
-  { min: 277825, max: null, rate: 45 },
-];
-
 const CHURCH_TAX_RATES: { [key: string]: number } = {
   "baden-wurttemberg": 8,
   "bayern": 8,
@@ -71,10 +63,7 @@ function calculateSocialInsurance(
     ? Math.min(annualGross, SOCIAL_INSURANCE_RATES.unemployment.ceiling) * (SOCIAL_INSURANCE_RATES.unemployment.rate / 100)
     : 0;
 
-  let nursingCareRate = SOCIAL_INSURANCE_RATES.nursingCare.rate;
-  if (hasChildren === "no") {
-    nursingCareRate += 0.6;
-  }
+  const nursingCareRate = SOCIAL_INSURANCE_RATES.nursingCare.rate + (hasChildren === "no" ? 0.6 : 0);
   const nursingCare = healthInsurance === "statutory"
     ? Math.min(annualGross, SOCIAL_INSURANCE_RATES.nursingCare.ceiling) * (nursingCareRate / 100)
     : 0;
@@ -84,6 +73,7 @@ function calculateSocialInsurance(
     pensionInsurance: Math.round(pension * 100) / 100,
     unemploymentInsurance: Math.round(unemployment * 100) / 100,
     nursingCareInsurance: Math.round(nursingCare * 100) / 100,
+    employeeShareForTax: 0,
   };
 }
 
@@ -92,24 +82,29 @@ function normalizeToAnnual(amount: number, frequency: "year" | "month"): number 
 }
 
 function calculateGermanTax(annualIncome: number): number {
+  if (annualIncome <= 12348) {
+    return 0;
+  }
+  
   const y = (annualIncome - 12348) / 10000;
   const z = (annualIncome - 17005) / 10000;
   
-  if (annualIncome <= 12348) {
-    return 0;
-  } else if (annualIncome <= 17005) {
-    return (922.98 * y + 1400) * y;
+  if (annualIncome <= 17005) {
+    return (914.51 * y + 1400) * y;
   } else if (annualIncome <= 66760) {
-    return (181.19 * z + 2397) * z + 1025.38;
+    return (176.64 * z + 2397) * z + 1015.13;
   } else if (annualIncome <= 277825) {
-    return 0.42 * annualIncome - 9267.53;
+    return 0.42 * annualIncome - 9236.64;
   } else {
-    return 0.45 * annualIncome - 17602.13;
+    return 0.45 * annualIncome - 17571.13;
   }
 }
 
 function calculateSolidaritySurcharge(incomeTax: number): number {
-  if (incomeTax <= 18130 * 0.14) return 0;
+  const SOLI_THRESHOLD = 20350;
+  if (incomeTax <= SOLI_THRESHOLD) {
+    return 0;
+  }
   return incomeTax * 0.055;
 }
 
@@ -121,10 +116,7 @@ export async function POST(request: NextRequest) {
 
     const annualGross = normalizeToAnnual(grossIncome, frequency);
 
-    const incomeTax = calculateGermanTax(annualGross);
-    const solidaritySurcharge = calculateSolidaritySurcharge(incomeTax);
-
-    const socialInsurance = calculateSocialInsurance(
+        const socialInsurance = calculateSocialInsurance(
       annualGross,
       healthInsurance,
       pensionInsurance,
@@ -132,6 +124,10 @@ export async function POST(request: NextRequest) {
       healthInsuranceSupplementary || 2.9,
       hasChildren
     );
+
+    const taxableIncome = annualGross * 0.76;
+    const incomeTax = calculateGermanTax(taxableIncome);
+    const solidaritySurcharge = calculateSolidaritySurcharge(incomeTax);
 
     let churchTaxAmount = 0;
     if (churchTax) {
