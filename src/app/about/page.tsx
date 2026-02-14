@@ -13,10 +13,10 @@ export default function About() {
           </h1>
           <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
             <p className="text-lg text-[#2ecc71]/90 leading-relaxed mb-4">
-              Gluub income tax calculator is a simple to use form calculator to help you find out what your take home pay is. Gluub uses current 2025 tax rates gathered from government websites to accurately calculate your take home pay.
+              Gluub is a simple to use tax calculator that helps you find out what your take home pay is. We use current tax rates gathered from official government sources to accurately calculate your take home pay.
             </p>
             <p className="text-lg text-[#2ecc71]/90 leading-relaxed">
-              Currently we only have tax calculators for England and Scotland, however more will be added soon.
+              We currently offer tax calculators for the UK and Germany, with more countries being added regularly.
             </p>
           </div>
         </section>
@@ -29,12 +29,12 @@ export default function About() {
           <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
             <ul className="grid md:grid-cols-2 gap-4">
               {[
-                "Income Tax (with all UK tax bands)",
-                "National Insurance contributions",
-                "Student Loan repayments (Plan 1, 2, 4 & Postgraduate)",
+                "Income Tax (country-specific rates)",
+                "National Insurance contributions (UK)",
                 "Pension contributions",
-                "Custom allowances and deductions",
-                "Support for England, Scotland, Wales & Northern Ireland"
+                "Health insurance deductions (Germany)",
+                "Detailed tax breakdowns",
+                "Social security deductions"
               ].map((item, index) => (
                 <li key={index} className="flex items-center gap-3">
                   <span className="text-[#2ecc71]">✓</span>
@@ -60,7 +60,7 @@ export default function About() {
               {
                 step: "2", 
                 title: "Add Your Details",
-                description: "Student loan? Pension? Any special allowances? We've got you covered"
+                description: "Enter your tax details, insurance info, and any applicable deductions"
               },
               {
                 step: "3",
@@ -86,7 +86,7 @@ export default function About() {
           </h2>
           <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20 text-center">
             <p className="text-lg text-[#2ecc71]/90 leading-relaxed">
-              We pull our tax rates directly from official government sources (HMRC) to ensure you&apos;re getting the most accurate calculation possible. Our calculator is updated for the 2025-2026 tax year.
+              We pull our tax rates directly from official government sources to ensure you&apos;re getting the most accurate calculation possible. Our calculators are updated for the 2025-2026 tax year.
             </p>
           </div>
         </section>
@@ -140,19 +140,20 @@ export default function About() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { flag: "🇩🇪", country: "Germany" },
-                { flag: "🇫🇷", country: "France" },
-                { flag: "🇨🇦", country: "Canada" },
-                { flag: "🇺🇸", country: "USA" }
+                { flag: "🇫🇷", country: "France", status: "Coming Soon" },
+                { flag: "🇨🇦", country: "Canada", status: "Coming Soon" },
+                { flag: "🇺🇸", country: "USA", status: "Coming Soon" },
+                { flag: "🇪🇸", country: "Spain", status: "Coming Soon" }
               ].map((item) => (
                 <div key={item.country} className="bg-[#05100a] rounded-lg p-4 text-center border border-[#2ecc71]/10">
                   <span className="text-3xl block mb-2">{item.flag}</span>
                   <span className="text-sm">{item.country}</span>
+                  <span className="text-xs text-[#2ecc71]/50 block mt-1">{item.status}</span>
                 </div>
               ))}
             </div>
             <p className="mt-6 text-center text-[#2ecc71]/60 text-sm">
-              + Historical tax years
+              + Historical tax years + More countries
             </p>
           </div>
         </section>
