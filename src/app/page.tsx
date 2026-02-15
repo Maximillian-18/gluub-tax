@@ -16,7 +16,7 @@ export default function Home() {
     } else if (selectedCountry === "germany") {
       router.push("/calculator/germany");
     } else if (selectedCountry === "denmark") {
-      alert("Denmark calculator coming soon!");
+      router.push("/calculator/denmark");
     }
   };
 
