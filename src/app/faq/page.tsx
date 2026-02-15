@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 
 export default function FAQ() {
   const faqs = [
@@ -24,12 +23,12 @@ export default function FAQ() {
     },
     {
       q: "What countries do you support?",
-      a: "We currently support the UK and Germany, with more countries coming soon!"
+      a: "We currently support the UK, Germany, and Denmark, with more countries coming soon!"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#05100a] text-[#2ecc71] flex flex-col">
+    <div className="min-h-screen bg-[#020806] text-[#2ecc71] flex flex-col">
       <main className="flex-1 px-4 md:px-8 py-12 pt-24 md:pt-28 max-w-4xl mx-auto w-full">
         
         {/* FAQ Section */}
@@ -49,7 +48,6 @@ export default function FAQ() {
 
       </main>
 
-      <Footer />
     </div>
   );
 }

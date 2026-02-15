@@ -1,9 +1,8 @@
 import Link from "next/link";
-import Footer from "@/components/Footer";
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-[#05100a] text-[#2ecc71] flex flex-col">
+    <div className="min-h-screen bg-[#020806] text-[#2ecc71] flex flex-col">
       <main className="flex-1 px-4 md:px-8 py-12 pt-24 md:pt-28 max-w-4xl mx-auto w-full">
         
         {/* Hero Section */}
@@ -16,7 +15,7 @@ export default function About() {
               Gluub is a simple to use tax calculator that helps you find out what your take home pay is. We use current tax rates gathered from official government sources to accurately calculate your take home pay.
             </p>
             <p className="text-lg text-[#2ecc71]/90 leading-relaxed">
-              We currently offer tax calculators for the UK and Germany, with more countries being added regularly.
+              We currently offer tax calculators for the UK, Germany, and Denmark. We'll keep adding more countries as we see demand and do the research!
             </p>
           </div>
         </section>
@@ -32,9 +31,9 @@ export default function About() {
                 "Income Tax (country-specific rates)",
                 "National Insurance contributions (UK)",
                 "Pension contributions",
-                "Health insurance deductions (Germany)",
+                "Health insurance deductions",
                 "Detailed tax breakdowns",
-                "Social security deductions"
+                "Social insurance deductions"
               ].map((item, index) => (
                 <li key={index} className="flex items-center gap-3">
                   <span className="text-[#2ecc71]">✓</span>
@@ -69,7 +68,7 @@ export default function About() {
               }
             ].map((item) => (
               <div key={item.step} className="bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20 text-center">
-                <div className="w-10 h-10 bg-[#2ecc71] text-[#05100a] rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
+                <div className="w-10 h-10 bg-[#2ecc71] text-[#020806] rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
                   {item.step}
                 </div>
                 <h3 className="font-bold text-lg mb-2">{item.title}</h3>
@@ -129,35 +128,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* Future Plans Section */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6 text-center">
-            Coming Soon
-          </h2>
-          <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
-            <p className="text-lg text-[#2ecc71]/90 mb-6">
-              We&apos;re just getting started! Here&apos;s what&apos;s on our roadmap:
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { flag: "🇫🇷", country: "France", status: "Coming Soon" },
-                { flag: "🇨🇦", country: "Canada", status: "Coming Soon" },
-                { flag: "🇺🇸", country: "USA", status: "Coming Soon" },
-                { flag: "🇪🇸", country: "Spain", status: "Coming Soon" }
-              ].map((item) => (
-                <div key={item.country} className="bg-[#05100a] rounded-lg p-4 text-center border border-[#2ecc71]/10">
-                  <span className="text-3xl block mb-2">{item.flag}</span>
-                  <span className="text-sm">{item.country}</span>
-                  <span className="text-xs text-[#2ecc71]/50 block mt-1">{item.status}</span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-6 text-center text-[#2ecc71]/60 text-sm">
-              + Historical tax years + More countries
-            </p>
-          </div>
-        </section>
-
         {/* Call to Action Section */}
         <section className="mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6">
@@ -168,7 +138,7 @@ export default function About() {
           </p>
           <Link 
             href="/"
-            className="inline-block px-8 py-4 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
+            className="inline-block px-8 py-4 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
           >
             Try the Calculator
           </Link>
@@ -176,7 +146,6 @@ export default function About() {
 
       </main>
 
-      <Footer />
     </div>
   );
 }
