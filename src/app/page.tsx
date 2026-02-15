@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState("united-kingdom");
@@ -21,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05100a] text-[#2ecc71] flex flex-col">
+    <div className="min-h-screen bg-[#020806] text-[#2ecc71] flex flex-col">
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-8">
         <div className="text-center">
@@ -48,16 +47,13 @@ export default function Home() {
             {/* Calculate Button */}
             <Button 
               onClick={handleCalculate}
-              className="px-4 py-2 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
+              className="px-4 py-2 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
             >
               Calculate
             </Button>
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

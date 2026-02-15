@@ -65,7 +65,7 @@ export function CustomSelect({
       {isOpen && (
         <div
           className={cn(
-            "absolute z-50 w-full mt-1 py-1 bg-[#05100a] border border-[#2ecc71] rounded-md shadow-lg",
+            "absolute z-50 w-full mt-1 py-1 bg-[#020806] border border-[#2ecc71] rounded-md shadow-lg",
             "max-h-60 overflow-y-auto"
           )}
         >

@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
-import Footer from "@/components/Footer";
 
 interface CalculationResult {
   breakdown: {
@@ -125,7 +124,7 @@ export default function GermanyCalculator() {
   };
 
   return (
-    <div className="min-h-screen bg-[#05100a] text-[#2ecc71] flex flex-col">
+    <div className="min-h-screen bg-[#020806] text-[#2ecc71] flex flex-col">
       <main className="flex-1 px-4 md:px-8 py-8 md:py-12 pt-20 md:pt-24 max-w-2xl mx-auto w-full">
         
         {/* Header */}
@@ -322,7 +321,7 @@ export default function GermanyCalculator() {
           <Button 
             type="button"
             disabled={loading}
-            className={`px-6 py-3 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : ''}`}
+            className={`px-6 py-3 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : ''}`}
           >
             Calculate
           </Button>
@@ -337,13 +336,13 @@ export default function GermanyCalculator() {
 
             {/* Summary */}
             <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-[#05100a] rounded-lg p-4">
+              <div className="bg-[#020806] rounded-lg p-4">
                 <p className="text-xs md:text-sm text-[#2ecc71]/70 mb-1">Annual Gross</p>
                 <p className="text-xl md:text-2xl font-bold text-[#2ecc71]">
                   {formatCurrency(result.breakdown.totalGross)}
                 </p>
               </div>
-              <div className="bg-[#05100a] rounded-lg p-4">
+              <div className="bg-[#020806] rounded-lg p-4">
                 <p className="text-xs md:text-sm text-[#2ecc71]/70 mb-1">Annual Net</p>
                 <p className="text-xl md:text-2xl font-bold text-[#2ecc71]">
                   {formatCurrency(result.netIncome.annual)}
@@ -495,7 +494,7 @@ export default function GermanyCalculator() {
             </div>
 
             {/* Net Pay */}
-            <div className="mt-8 bg-[#05100a] rounded-lg p-4 space-y-2">
+            <div className="mt-8 bg-[#020806] rounded-lg p-4 space-y-2">
               <div className="flex justify-between">
                 <span className="text-[#2ecc71]">Monthly Net</span>
                 <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.monthly)}</span>
@@ -512,8 +511,6 @@ export default function GermanyCalculator() {
           </div>
         )}
       </main>
-
-      <Footer />
     </div>
   );
 }
