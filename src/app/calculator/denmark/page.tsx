@@ -278,12 +278,6 @@ export default function DenmarkCalculator() {
                       <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross / 12)}</td>
                       <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross)}</td>
                     </tr>
-                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-xs md:text-sm">Total Gross</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross)}</td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -433,8 +427,12 @@ export default function DenmarkCalculator() {
             {/* Net Pay */}
             <div className="mt-8 bg-[#020806] rounded-lg p-4 space-y-2">
               <div className="flex justify-between">
+                <span className="text-[#2ecc71]">Weekly Net</span>
+                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual / 52)}</span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-[#2ecc71]">Monthly Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.monthly)}</span>
+                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual / 12)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#2ecc71]">Annual Net</span>
