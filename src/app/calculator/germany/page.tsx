@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CustomSelect } from "@/components/CustomSelect";
@@ -68,8 +68,24 @@ export default function GermanyCalculator() {
   const [state, setState] = useState("bayern");
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [buttonPressed, setButtonPressed] = useState(false);
 
-  const handleCalculate = async () => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "BUTTON") {
+        e.preventDefault();
+        handleCalculate(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleCalculate = async (fromEnter?: boolean) => {
+    if (fromEnter) {
+      setButtonPressed(true);
+      setTimeout(() => setButtonPressed(false), 150);
+    }
     setLoading(true);
     try {
       const response = await fetch("/api/calculate/germany", {
@@ -119,7 +135,7 @@ export default function GermanyCalculator() {
           </p>
         </div>
 
-        <div className="space-y-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleCalculate(true); }} className="space-y-8">
           {/* Gross Income */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
@@ -130,7 +146,13 @@ export default function GermanyCalculator() {
                 type="number"
                 value={grossIncome}
                 onChange={(e) => setGrossIncome(e.target.value)}
-                onKeyDown={preventNegative}
+                onKeyDown={(e) => {
+                  preventNegative(e);
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleCalculate(true);
+                  }
+                }}
                 placeholder="Enter gross salary"
                 className={numberInputClass}
               />
@@ -299,15 +321,15 @@ export default function GermanyCalculator() {
             />
           </div>
 
-          {/* Calculate Button */}
+{/* Calculate Button */}
           <Button 
-            onClick={handleCalculate}
+            type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
+            className={`px-6 py-3 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : 'active:scale-95 active:bg-[#e67e22]'}`}
           >
-            {loading ? "Calculating..." : "Calculate"}
+            Calculate
           </Button>
-        </div>
+        </form>
 
         {/* Results */}
         {result && (
