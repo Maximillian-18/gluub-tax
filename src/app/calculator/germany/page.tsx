@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CustomSelect } from "@/components/CustomSelect";
@@ -70,17 +70,6 @@ export default function GermanyCalculator() {
   const [loading, setLoading] = useState(false);
   const [buttonPressed, setButtonPressed] = useState(false);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "BUTTON") {
-        e.preventDefault();
-        handleCalculate(true);
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   const handleCalculate = async (fromEnter?: boolean) => {
     if (fromEnter) {
       setButtonPressed(true);
@@ -113,6 +102,20 @@ export default function GermanyCalculator() {
     setLoading(false);
   };
 
+  const handleCalculateRef = useRef(handleCalculate);
+  handleCalculateRef.current = handleCalculate;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "BUTTON") {
+        e.preventDefault();
+        handleCalculateRef.current(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("de-DE", {
       style: "currency",
@@ -135,7 +138,7 @@ export default function GermanyCalculator() {
           </p>
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); handleCalculate(true); }} className="space-y-8">
+        <div className="space-y-6">
           {/* Gross Income */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
@@ -146,13 +149,7 @@ export default function GermanyCalculator() {
                 type="number"
                 value={grossIncome}
                 onChange={(e) => setGrossIncome(e.target.value)}
-                onKeyDown={(e) => {
-                  preventNegative(e);
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleCalculate(true);
-                  }
-                }}
+                onKeyDown={preventNegative}
                 placeholder="Enter gross salary"
                 className={numberInputClass}
               />
@@ -321,15 +318,15 @@ export default function GermanyCalculator() {
             />
           </div>
 
-{/* Calculate Button */}
+          {/* Calculate Button */}
           <Button 
-            type="submit"
+            type="button"
             disabled={loading}
-            className={`px-6 py-3 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : 'active:scale-95 active:bg-[#e67e22]'}`}
+            className={`px-6 py-3 bg-[#f1c40f] text-[#05100a] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : ''}`}
           >
             Calculate
           </Button>
-        </form>
+        </div>
 
         {/* Results */}
         {result && (

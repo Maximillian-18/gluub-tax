@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -95,19 +95,8 @@ export default function UKCalculator() {
   const updateCustomAllowance = (id: number, field: "name" | "amount", value: string) => {
     setCustomAllowances(customAllowances.map(a => 
       a.id === id ? { ...a, [field]: field === "amount" ? parseFloat(value) || 0 : value } : a
-    ));
+));
   };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "BUTTON") {
-        e.preventDefault();
-        handleCalculate(true);
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   const handleCalculate = async (fromEnter?: boolean) => {
     if (fromEnter) {
@@ -141,8 +130,22 @@ export default function UKCalculator() {
     } catch (error) {
       console.error("Calculation error:", error);
     }
-    setLoading(false);
+setLoading(false);
   };
+
+  const handleCalculateRef = useRef(handleCalculate);
+  handleCalculateRef.current = handleCalculate;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && (e.target as HTMLElement).tagName !== "BUTTON") {
+        e.preventDefault();
+        handleCalculateRef.current(true);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-GB", {
