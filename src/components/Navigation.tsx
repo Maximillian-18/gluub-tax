@@ -14,6 +14,9 @@ export default function Navigation() {
         <Link href="/info" className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide hover:opacity-80">
           Info
         </Link>
+        <Link href="/contact" className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide hover:opacity-80">
+          Contact
+        </Link>
         <Link href="/faq" className="text-[#2ecc71] text-xs md:text-base font-medium tracking-wide hover:opacity-80">
           FAQ
         </Link>
