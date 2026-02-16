@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CustomSelect } from "@/components/CustomSelect";
 import { SearchableSelect } from "@/components/SearchableSelect";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ interface CalculationResult {
     grossSalary: number;
     totalGross: number;
     pensionContribution: number;
+    personalPensionContribution: number;
     personalAllowance: number;
     taxableIncome: number;
   };
@@ -158,6 +160,8 @@ export default function DenmarkCalculator() {
   const [personalAllowance, setPersonalAllowance] = useState(true);
   const [pensionType, setPensionType] = useState<"default" | "amount" | "percentage">("default");
   const [pensionValue, setPensionValue] = useState("");
+  const [personalPensionType, setPersonalPensionType] = useState<"amount" | "percentage">("amount");
+  const [personalPensionValue, setPersonalPensionValue] = useState("");
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [buttonPressed, setButtonPressed] = useState(false);
@@ -181,6 +185,8 @@ export default function DenmarkCalculator() {
           taxYear,
           pensionType,
           pensionValue: parseFloat(pensionValue) || 0,
+          personalPensionType,
+          personalPensionValue: parseFloat(personalPensionValue) || 0,
         }),
       });
 
@@ -322,41 +328,81 @@ export default function DenmarkCalculator() {
             </label>
           </div>
 
-          {/* Pension Type */}
+          {/* Company Pension */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Pension (ATP)
+              Company Pension Contribution (ATP) {pensionType === "percentage" ? "(% of salary)" : pensionType === "amount" ? "(DKK/month)" : "(99 kr/month)"}
             </label>
-            <CustomSelect
-              value={pensionType}
-              onValueChange={(value) => setPensionType(value as "default" | "amount" | "percentage")}
-              options={[
-                { value: "default", label: "Default (99 kr/month)" },
-                { value: "amount", label: "Custom Amount" },
-                { value: "percentage", label: "Custom %" },
-              ]}
-              placeholder="Select pension type"
-              className="w-full md:w-[250px]"
-            />
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <Tabs value={pensionType} onValueChange={(v) => setPensionType(v as "default" | "percentage" | "amount")} className="w-auto">
+                <TabsList className="bg-transparent border border-[#2ecc71]">
+                  <TabsTrigger 
+                    value="default" 
+                    className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
+                  >
+                    Default
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="percentage" 
+                    className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
+                  >
+                    Percentage
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="amount"
+                    className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
+                  >
+                    Amount
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+              {(pensionType === "amount" || pensionType === "percentage") && (
+                <Input
+                  type="number"
+                  min={0}
+                  value={pensionValue}
+                  onChange={(e) => setPensionValue(e.target.value)}
+                  onKeyDown={preventNegative}
+                  placeholder={pensionType === "percentage" ? "e.g., 5" : "Enter monthly amount"}
+                  className={numberInputClass}
+                />
+              )}
+            </div>
           </div>
 
-          {/* Pension Value (Conditional) */}
-          {(pensionType === "amount" || pensionType === "percentage") && (
-            <div>
-              <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-                {pensionType === "amount" ? "Custom Pension Amount (DKK/year)" : "Custom Pension %"}
-              </label>
+          {/* Personal Pension */}
+          <div>
+            <label className="block text-lg font-bold text-[#2ecc71] mb-2">
+              Personal Pension Contribution {personalPensionType === "percentage" ? "(% of salary)" : "(DKK/month)"}
+            </label>
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <Tabs value={personalPensionType} onValueChange={(v) => setPersonalPensionType(v as "percentage" | "amount")} className="w-auto">
+                <TabsList className="bg-transparent border border-[#2ecc71]">
+                  <TabsTrigger 
+                    value="percentage" 
+                    className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
+                  >
+                    Percentage
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="amount"
+                    className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
+                  >
+                    Amount
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
               <Input
                 type="number"
                 min={0}
-                value={pensionValue}
-                onChange={(e) => setPensionValue(e.target.value)}
+                value={personalPensionValue}
+                onChange={(e) => setPersonalPensionValue(e.target.value)}
                 onKeyDown={preventNegative}
-                placeholder={pensionType === "amount" ? "Enter annual amount" : "Enter percentage"}
+                placeholder={personalPensionType === "percentage" ? "e.g., 5" : "Enter monthly amount"}
                 className={numberInputClass}
               />
             </div>
-          )}
+          </div>
 
           {/* Calculate Button */}
           <Button 
@@ -381,7 +427,7 @@ export default function DenmarkCalculator() {
               <div className="bg-[#020806] rounded-lg p-4">
                 <p className="text-xs md:text-sm text-[#2ecc71]/70 mb-1">Annual Gross</p>
                 <p className="text-xl md:text-2xl font-bold text-[#2ecc71]">
-                  {formatCurrency(result.breakdown.totalGross)}
+                  {formatCurrency(result.breakdown.grossSalary)}
                 </p>
               </div>
               <div className="bg-[#020806] rounded-lg p-4">
@@ -407,10 +453,28 @@ export default function DenmarkCalculator() {
                   </thead>
                   <tbody>
                     <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">Gross Salary</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">{formatCurrency(result.breakdown.totalGross)}</td>
+                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">Gross Salary</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.grossSalary / 52)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.grossSalary / 12)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.grossSalary)}</td>
+                    </tr>
+                    <tr className="border-b border-[#2ecc71]/10">
+                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">- Company Pension (ATP)</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 52)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 12)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution)}</td>
+                    </tr>
+                    <tr className="border-b border-[#2ecc71]/10">
+                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">- Personal Pension</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.personalPensionContribution / 52)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.personalPensionContribution / 12)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.personalPensionContribution)}</td>
+                    </tr>
+                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
+                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">Total Gross</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.totalGross / 52)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.totalGross / 12)}</td>
+                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.totalGross)}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -433,9 +497,9 @@ export default function DenmarkCalculator() {
               </div>
             )}
 
-            {/* Deductions - State Taxes */}
+            {/* Deductions - Income Tax */}
             <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">State Taxes</h3>
+              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Income Tax</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs md:text-sm">
                   <thead>
@@ -515,37 +579,6 @@ export default function DenmarkCalculator() {
               </div>
             </div>
 
-            {/* Deductions - Social Insurance */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Social Insurance</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <thead>
-                    <tr className="border-b border-[#2ecc71]/30">
-                      <th className="text-left py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Deduction</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Weekly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Monthly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Pension (ATP)</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-xs md:text-sm">Social Insurance Total</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
             {/* Total Deductions */}
             <div className="mb-8 -mx-2 md:mx-0">
               <div className="overflow-x-auto">
@@ -568,7 +601,7 @@ export default function DenmarkCalculator() {
                 <span className="text-[#2ecc71] font-bold">Effective Tax Rate</span>
                 <span className="text-lg md:text-xl font-bold text-[#f1c40f]">
                   {result.breakdown.totalGross > 0 
-                    ? ((result.deductions.total / result.breakdown.totalGross) * 100).toFixed(1)
+                    ? ((result.deductions.total / result.breakdown.grossSalary) * 100).toFixed(1)
                     : 0}%
                 </span>
               </div>
