@@ -31,7 +31,7 @@ interface CalculationResult {
 const numberInputClass = "flex-1 px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
 const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  if (e.key === "-" || e.key === "e" || e.key === "E") {
+  if (e.key === "-" || e.key === "e" || e.key === "E" || e.key === "ArrowUp" || e.key === "ArrowDown") {
     e.preventDefault();
   }
 };
@@ -120,6 +120,7 @@ export default function DenmarkCalculator() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
                 type="number"
+                min={0}
                 value={grossIncome}
                 onChange={(e) => setGrossIncome(e.target.value)}
                 onKeyDown={(e) => {
@@ -169,6 +170,7 @@ export default function DenmarkCalculator() {
             </label>
             <Input
               type="number"
+              min={0}
               value={municipalityTaxRate}
               onChange={(e) => setMunicipalityTaxRate(e.target.value)}
               onKeyDown={preventNegative}
@@ -215,6 +217,7 @@ export default function DenmarkCalculator() {
               </label>
               <Input
                 type="number"
+                min={0}
                 value={pensionValue}
                 onChange={(e) => setPensionValue(e.target.value)}
                 onKeyDown={preventNegative}

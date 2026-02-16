@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
+import Link from "next/link";
 
 const numberInputClass = "flex-1 px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
@@ -17,7 +18,7 @@ const customAllowanceInputClass = "flex-1 px-3 py-2 bg-transparent border-[#2ecc
 const customAllowanceAmountClass = "w-[120px] px-3 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-base font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
 const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
-  if (e.key === "-" || e.key === "e" || e.key === "E") {
+  if (e.key === "-" || e.key === "e" || e.key === "E" || e.key === "ArrowUp" || e.key === "ArrowDown") {
     e.preventDefault();
   }
 };
@@ -181,11 +182,12 @@ setLoading(false);
             {/* Gross Income */}
             <div>
               <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-                Gross (pre-tax) income
+                Gross income (£)
               </label>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Input
                   type="number"
+                  min={0}
                   value={grossIncome}
                   onChange={(e) => setGrossIncome(e.target.value)}
                   onKeyDown={(e) => {
@@ -249,6 +251,7 @@ setLoading(false);
               </label>
               <Input
                 type="number"
+                min={0}
                 value={bonus}
                 onChange={(e) => setBonus(e.target.value)}
                 onKeyDown={preventNegative}
@@ -264,6 +267,7 @@ setLoading(false);
               </label>
               <Input
                 type="number"
+                min={0}
                 value={overtime}
                 onChange={(e) => setOvertime(e.target.value)}
                 onKeyDown={preventNegative}
@@ -296,6 +300,7 @@ setLoading(false);
                 </Tabs>
                 <Input
                   type="number"
+                  min={0}
                   value={pensionValue}
                   onChange={(e) => setPensionValue(e.target.value)}
                   onKeyDown={preventNegative}
@@ -391,6 +396,7 @@ setLoading(false);
                   />
                   <Input
                     type="number"
+                    min={0}
                     value={allowance.amount || ""}
                     onChange={(e) => updateCustomAllowance(allowance.id, "amount", e.target.value)}
                     onKeyDown={preventNegative}
@@ -577,9 +583,13 @@ setLoading(false);
 
               {/* Tax Free Allowance Info */}
               <div className="mt-6 text-sm text-[#2ecc71]/70">
-                <p>Tax-free allowance: {formatCurrency(result.breakdown.taxFreeAllowance)}</p>
+                <p>Tax-free allowance: <Link href="/info" className="underline hover:text-[#2ecc71]/80">{formatCurrency(result.breakdown.taxFreeAllowance)}</Link><span className="text-[#e74c3c]">*</span></p>
                 <p>Taxable income: {formatCurrency(result.breakdown.taxableIncome)}</p>
               </div>
+
+              <p className="mt-4 text-xs text-[#2ecc71]/50">
+                * This is an estimate. For exact calculations, please consult a tax professional.
+              </p>
             </div>
           )}
         </div>
