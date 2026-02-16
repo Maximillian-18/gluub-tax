@@ -5,22 +5,34 @@ interface DenmarkCalculateRequest {
   frequency: "year" | "month";
   municipalityTaxRate: number;
   churchTax: boolean;
+  personalAllowance: boolean;
+  taxYear: string;
   pensionType: "default" | "amount" | "percentage";
   pensionValue: number;
 }
 
 const TAX_BRACKETS_2026 = {
+  personalAllowance: 54100,
   middleTaxThreshold: 696956,
   topTaxThreshold: 845543,
   topTopTaxThreshold: 2818152,
+};
+
+const TAX_BRACKETS_2025 = {
+  personalAllowance: 51600,
+  middleTaxThreshold: 673100,
+  topTaxThreshold: 783400,
+  topTopTaxThreshold: 2691400,
 };
 
 function normalizeToAnnual(amount: number, frequency: "year" | "month"): number {
   return frequency === "month" ? amount * 12 : amount;
 }
 
-function calculateDanishTax(annualGross: number, pensionType: string, pensionValue: number): {
+function calculateDanishTax(annualGross: number, pensionType: string, pensionValue: number, personalAllowance: boolean, taxYear: string): {
   pension: number;
+  personalAllowanceAmount: number;
+  taxableIncome: number;
   bottomTax: number;
   middleTax: number;
   topTax: number;
@@ -30,6 +42,9 @@ function calculateDanishTax(annualGross: number, pensionType: string, pensionVal
   churchTax: number;
   total: number;
 } {
+  const taxBrackets = taxYear === "2025" ? TAX_BRACKETS_2025 : TAX_BRACKETS_2026;
+  const personalAllowanceAmount = personalAllowance ? taxBrackets.personalAllowance : 0;
+  
   let annualPension = 0;
   
   if (pensionType === "default") {
@@ -40,33 +55,36 @@ function calculateDanishTax(annualGross: number, pensionType: string, pensionVal
     annualPension = annualGross * (pensionValue / 100);
   }
 
-  const personalIncome = Math.max(0, annualGross - annualPension);
+  const grossAfterPension = Math.max(0, annualGross - annualPension);
+  const taxableIncome = Math.max(0, grossAfterPension - personalAllowanceAmount);
 
-  const bottomTax = personalIncome * 0.1201;
+  const bottomTax = grossAfterPension * 0.1201;
 
   let middleTax = 0;
-  if (personalIncome > TAX_BRACKETS_2026.middleTaxThreshold) {
-    middleTax = (personalIncome - TAX_BRACKETS_2026.middleTaxThreshold) * 0.075;
+  if (taxableIncome > taxBrackets.middleTaxThreshold) {
+    middleTax = (taxableIncome - taxBrackets.middleTaxThreshold) * 0.075;
   }
 
   let topTax = 0;
-  if (personalIncome > TAX_BRACKETS_2026.topTaxThreshold) {
-    topTax = (personalIncome - TAX_BRACKETS_2026.topTaxThreshold) * 0.075;
+  if (taxableIncome > taxBrackets.topTaxThreshold) {
+    topTax = (taxableIncome - taxBrackets.topTaxThreshold) * 0.075;
   }
 
   let topTopTax = 0;
-  if (personalIncome > TAX_BRACKETS_2026.topTopTaxThreshold) {
-    topTopTax = (personalIncome - TAX_BRACKETS_2026.topTopTaxThreshold) * 0.05;
+  if (taxableIncome > taxBrackets.topTopTaxThreshold) {
+    topTopTax = (taxableIncome - taxBrackets.topTopTaxThreshold) * 0.05;
   }
 
-  const municipalTax = personalIncome * 0.25049;
-  const labourMarketTax = personalIncome * 0.08;
-  const churchTax = personalIncome * 0.0064;
+  const municipalTax = taxableIncome * 0.25049;
+  const labourMarketTax = taxableIncome * 0.08;
+  const churchTax = taxableIncome * 0.0064;
 
   const total = bottomTax + middleTax + topTax + topTopTax + municipalTax + labourMarketTax + churchTax;
 
   return {
     pension: annualPension,
+    personalAllowanceAmount,
+    taxableIncome,
     bottomTax: Math.round(bottomTax * 100) / 100,
     middleTax: Math.round(middleTax * 100) / 100,
     topTax: Math.round(topTax * 100) / 100,
@@ -82,14 +100,16 @@ export async function POST(request: NextRequest) {
   try {
     const body: DenmarkCalculateRequest = await request.json();
 
-    const { grossIncome, frequency, municipalityTaxRate, churchTax, pensionType, pensionValue } = body;
+    const { grossIncome, frequency, municipalityTaxRate, churchTax, personalAllowance, taxYear, pensionType, pensionValue } = body;
 
     const annualGross = normalizeToAnnual(grossIncome, frequency);
 
     const taxResult = calculateDanishTax(
       annualGross,
       pensionType,
-      pensionValue
+      pensionValue,
+      personalAllowance,
+      taxYear
     );
 
     const churchTaxAmount = churchTax ? taxResult.churchTax : 0;
@@ -103,6 +123,8 @@ export async function POST(request: NextRequest) {
         grossSalary: annualGross,
         totalGross: annualGross,
         pensionContribution: taxResult.pension,
+        personalAllowance: taxResult.personalAllowanceAmount,
+        taxableIncome: taxResult.taxableIncome,
       },
       deductions: {
         bottomTax: taxResult.bottomTax,
@@ -118,7 +140,7 @@ export async function POST(request: NextRequest) {
         annual: Math.round(netAnnual * 100) / 100,
         monthly: Math.round((netAnnual / 12) * 100) / 100,
       },
-      taxYear: "2026",
+      taxYear: taxYear,
     };
 
     return NextResponse.json(response);

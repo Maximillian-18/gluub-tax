@@ -10,6 +10,8 @@ interface CalculationResult {
   breakdown: {
     grossSalary: number;
     totalGross: number;
+    personalAllowance: number;
+    taxableIncome: number;
   };
   deductions: {
     incomeTax: number;
@@ -65,6 +67,7 @@ export default function GermanyCalculator() {
   const [pensionInsurance, setPensionInsurance] = useState("statutory");
   const [unemploymentInsurance, setUnemploymentInsurance] = useState("statutory");
   const [state, setState] = useState("bayern");
+  const [taxYear, setTaxYear] = useState("2026");
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [buttonPressed, setButtonPressed] = useState(false);
@@ -90,6 +93,7 @@ export default function GermanyCalculator() {
           pensionInsurance,
           unemploymentInsurance,
           state,
+          taxYear,
         }),
       });
 
@@ -172,8 +176,8 @@ export default function GermanyCalculator() {
               Tax Year
             </label>
             <CustomSelect
-              value="2026"
-              onValueChange={() => {}}
+              value={taxYear}
+              onValueChange={setTaxYear}
               options={[
                 { value: "2026", label: "2026" },
                 { value: "2025", label: "2025" },
@@ -375,6 +379,20 @@ export default function GermanyCalculator() {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            {/* Personal Allowance & Taxable Income */}
+            <div className="mb-8">
+              <div className="bg-[#020806] rounded-lg p-4 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-[#2ecc71]">Personal Allowance</span>
+                  <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.personalAllowance)}</span>
+                </div>
+                <div className="flex justify-between items-center border-t border-[#2ecc71]/20 pt-2">
+                  <span className="text-[#2ecc71] font-bold">Taxable Income</span>
+                  <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.taxableIncome)}</span>
+                </div>
               </div>
             </div>
 

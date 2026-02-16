@@ -11,7 +11,11 @@ interface GermanyCalculateRequest {
   unemploymentInsurance: "statutory" | "private" | "none";
   healthInsuranceSupplementary: number;
   state?: string;
+  taxYear?: string;
 }
+
+const PERSONAL_ALLOWANCE_2026 = 12348;
+const PERSONAL_ALLOWANCE_2025 = 12096;
 
 const CHURCH_TAX_RATES: { [key: string]: number } = {
   "baden-wurttemberg": 8,
@@ -81,23 +85,28 @@ function normalizeToAnnual(amount: number, frequency: "year" | "month"): number 
   return frequency === "month" ? amount * 12 : amount;
 }
 
-function calculateGermanTax(annualIncome: number): number {
-  if (annualIncome <= 12348) {
-    return 0;
+function calculateGermanTax(annualIncome: number, personalAllowance: number): { incomeTax: number; taxableIncome: number } {
+  const taxableIncome = Math.max(0, annualIncome - personalAllowance);
+  
+  if (taxableIncome <= 0) {
+    return { incomeTax: 0, taxableIncome: 0 };
   }
   
-  const y = (annualIncome - 12348) / 10000;
-  const z = (annualIncome - 17005) / 10000;
+  const y = (taxableIncome - 12348) / 10000;
+  const z = (taxableIncome - 17005) / 10000;
   
-  if (annualIncome <= 17005) {
-    return (914.51 * y + 1400) * y;
-  } else if (annualIncome <= 66760) {
-    return (176.64 * z + 2397) * z + 1015.13;
-  } else if (annualIncome <= 277825) {
-    return 0.42 * annualIncome - 9236.64;
+  let incomeTax: number;
+  if (taxableIncome <= 17005) {
+    incomeTax = (914.51 * y + 1400) * y;
+  } else if (taxableIncome <= 66760) {
+    incomeTax = (176.64 * z + 2397) * z + 1015.13;
+  } else if (taxableIncome <= 277825) {
+    incomeTax = 0.42 * taxableIncome - 9236.64;
   } else {
-    return 0.45 * annualIncome - 17571.13;
+    incomeTax = 0.45 * taxableIncome - 17571.13;
   }
+  
+  return { incomeTax, taxableIncome };
 }
 
 function calculateSolidaritySurcharge(incomeTax: number): number {
@@ -112,11 +121,12 @@ export async function POST(request: NextRequest) {
   try {
     const body: GermanyCalculateRequest = await request.json();
 
-    const { grossIncome, frequency, taxCategory, churchTax, hasChildren, healthInsurance, pensionInsurance, unemploymentInsurance, healthInsuranceSupplementary, state } = body;
+    const { grossIncome, frequency, taxCategory, churchTax, hasChildren, healthInsurance, pensionInsurance, unemploymentInsurance, healthInsuranceSupplementary, state, taxYear } = body;
 
     const annualGross = normalizeToAnnual(grossIncome, frequency);
 
-        const socialInsurance = calculateSocialInsurance(
+    const personalAllowance = taxYear === "2025" ? PERSONAL_ALLOWANCE_2025 : PERSONAL_ALLOWANCE_2026;
+    const socialInsurance = calculateSocialInsurance(
       annualGross,
       healthInsurance,
       pensionInsurance,
@@ -125,8 +135,9 @@ export async function POST(request: NextRequest) {
       hasChildren
     );
 
-    const taxableIncome = annualGross * 0.76;
-    const incomeTax = calculateGermanTax(taxableIncome);
+    const taxCalculation = calculateGermanTax(annualGross, personalAllowance);
+    const incomeTax = taxCalculation.incomeTax;
+    const taxableIncome = taxCalculation.taxableIncome;
     const solidaritySurcharge = calculateSolidaritySurcharge(incomeTax);
 
     let churchTaxAmount = 0;
@@ -143,6 +154,8 @@ export async function POST(request: NextRequest) {
       breakdown: {
         grossSalary: annualGross,
         totalGross: annualGross,
+        personalAllowance: personalAllowance,
+        taxableIncome: taxableIncome,
       },
       deductions: {
         incomeTax: Math.round(incomeTax * 100) / 100,
@@ -159,7 +172,7 @@ export async function POST(request: NextRequest) {
         monthly: Math.round((netAnnual / 12) * 100) / 100,
       },
       taxCategory,
-      taxYear: "2026",
+      taxYear: taxYear || "2026",
     };
 
     return NextResponse.json(response);

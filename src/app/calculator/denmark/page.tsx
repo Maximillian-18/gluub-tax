@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CustomSelect } from "@/components/CustomSelect";
+import { SearchableSelect } from "@/components/SearchableSelect";
 import { Button } from "@/components/ui/button";
 
 interface CalculationResult {
@@ -11,6 +12,8 @@ interface CalculationResult {
     grossSalary: number;
     totalGross: number;
     pensionContribution: number;
+    personalAllowance: number;
+    taxableIncome: number;
   };
   deductions: {
     bottomTax: number;
@@ -28,6 +31,116 @@ interface CalculationResult {
   };
 }
 
+const municipalities = [
+  { value: "aabenraa", label: "Aabenraa", rate: 25.60 },
+  { value: "aaborg", label: "Aalborg", rate: 25.60 },
+  { value: "aarhus", label: "Aarhus", rate: 24.52 },
+  { value: "assens", label: "Assens", rate: 26.10 },
+  { value: "ballerup", label: "Ballerup", rate: 25.50 },
+  { value: "billund", label: "Billund", rate: 24.00 },
+  { value: "bornholm", label: "Bornholm", rate: 26.20 },
+  { value: "broenderslev", label: "Brønderslev", rate: 26.30 },
+  { value: "broendby", label: "Brøndby", rate: 24.30 },
+  { value: "dragor", label: "Dragør", rate: 24.80 },
+  { value: "egedal", label: "Egedal", rate: 25.70 },
+  { value: "esbjerg", label: "Esbjerg", rate: 26.10 },
+  { value: "faaborg-midtfyn", label: "Faaborg-Midtfyn", rate: 26.10 },
+  { value: "fanø", label: "Fanø", rate: 26.10 },
+  { value: "faxe", label: "Faxe", rate: 25.80 },
+  { value: "favrskov", label: "Favrskov", rate: 25.70 },
+  { value: "fredericia", label: "Fredericia", rate: 25.50 },
+  { value: "frederiksberg", label: "Frederiksberg", rate: 24.50 },
+  { value: "frederikshavn", label: "Frederikshavn", rate: 26.20 },
+  { value: "frederikssund", label: "Frederikssund", rate: 25.60 },
+  { value: "gentofte", label: "Gentofte", rate: 24.14 },
+  { value: "gladsaxe", label: "Gladsaxe", rate: 23.60 },
+  { value: "glostrup", label: "Glostrup", rate: 24.60 },
+  { value: "greve", label: "Greve", rate: 24.59 },
+  { value: "gribskov", label: "Gribskov", rate: 25.40 },
+  { value: "guldborgsund", label: "Guldborgsund", rate: 25.80 },
+  { value: "haderslev", label: "Haderslev", rate: 26.30 },
+  { value: "halsnaes", label: "Halsnæs", rate: 25.70 },
+  { value: "hedensted", label: "Hedensted", rate: 25.52 },
+  { value: "helsingoer", label: "Elsinore", rate: 25.82 },
+  { value: "herlev", label: "Herlev", rate: 23.70 },
+  { value: "herning", label: "Herning", rate: 25.40 },
+  { value: "hilleroed", label: "Hillerød", rate: 25.60 },
+  { value: "hjorring", label: "Hjørring", rate: 26.21 },
+  { value: "hoje-taastrup", label: "Høje-Taastrup", rate: 24.60 },
+  { value: "holbaek", label: "Holbæk", rate: 25.30 },
+  { value: "holstebro", label: "Holstebro", rate: 25.50 },
+  { value: "horsens", label: "Horsens", rate: 25.69 },
+  { value: "hoersholm", label: "Hørsholm", rate: 23.70 },
+  { value: "hvidovre", label: "Hvidovre", rate: 25.40 },
+  { value: "ikast-brande", label: "Ikast-Brande", rate: 25.10 },
+  { value: "ishoj", label: "Ishøj", rate: 25.00 },
+  { value: "jammerbugt", label: "Jammerbugt", rate: 25.70 },
+  { value: "kalundborg", label: "Kalundborg", rate: 24.20 },
+  { value: "kerteminde", label: "Kerteminde", rate: 26.10 },
+  { value: "kolding", label: "Kolding", rate: 25.50 },
+  { value: "koebenhavn", label: "Copenhagen", rate: 23.39 },
+  { value: "koege", label: "Køge", rate: 25.26 },
+  { value: "laesoe", label: "Læsø", rate: 26.30 },
+  { value: "langeland", label: "Langeland", rate: 26.30 },
+  { value: "lemvig", label: "Lemvig", rate: 25.70 },
+  { value: "lolland", label: "Lolland", rate: 26.30 },
+  { value: "lyngby-taarbaek", label: "Lyngby-Taarbæk", rate: 24.38 },
+  { value: "mariagerfjord", label: "Mariagerfjord", rate: 25.90 },
+  { value: "middelfart", label: "Middelfart", rate: 25.80 },
+  { value: "morsoe", label: "Morsø", rate: 25.80 },
+  { value: "naestved", label: "Næstved", rate: 25.00 },
+  { value: "norddjurs", label: "Norddjurs", rate: 26.00 },
+  { value: "nordfyns", label: "Nordfyns", rate: 26.00 },
+  { value: "nyborg", label: "Nyborg", rate: 26.30 },
+  { value: "odder", label: "Odder", rate: 25.10 },
+  { value: "odense", label: "Odense", rate: 25.50 },
+  { value: "odsherred", label: "Odsherred", rate: 26.30 },
+  { value: "randers", label: "Randers", rate: 26.00 },
+  { value: "rebild", label: "Rebild", rate: 25.83 },
+  { value: "ringkobing-skjern", label: "Ringkøbing-Skjern", rate: 25.00 },
+  { value: "ringsted", label: "Ringsted", rate: 26.10 },
+  { value: "roskilde", label: "Roskilde", rate: 25.20 },
+  { value: "rudersdal", label: "Rudersdal", rate: 23.47 },
+  { value: "roedovre", label: "Rødovre", rate: 25.70 },
+  { value: "samsoe", label: "Samsø", rate: 25.90 },
+  { value: "silkeborg", label: "Silkeborg", rate: 25.50 },
+  { value: "skanderborg", label: "Skanderborg", rate: 26.00 },
+  { value: "skive", label: "Skive", rate: 25.50 },
+  { value: "slagelse", label: "Slagelse", rate: 26.10 },
+  { value: "soenderborg", label: "Sønderborg", rate: 25.70 },
+  { value: "solroed", label: "Solrød", rate: 24.99 },
+  { value: "soroe", label: "Sorø", rate: 26.30 },
+  { value: "stevns", label: "Stevns", rate: 26.00 },
+  { value: "struer", label: "Struer", rate: 25.30 },
+  { value: "svendborg", label: "Svendborg", rate: 26.30 },
+  { value: "syddjurs", label: "Syddjurs", rate: 25.90 },
+  { value: "taarnby", label: "Tårnby", rate: 24.10 },
+  { value: "thisted", label: "Thisted", rate: 25.50 },
+  { value: "toender", label: "Tønder", rate: 25.30 },
+  { value: "vallensbaek", label: "Vallensbæk", rate: 25.60 },
+  { value: "varde", label: "Varde", rate: 25.10 },
+  { value: "vejle", label: "Vejle", rate: 23.40 },
+  { value: "vejen", label: "Vejen", rate: 25.80 },
+  { value: "vesthimmerland", label: "Vesthimmerland", rate: 26.30 },
+  { value: "viborg", label: "Viborg", rate: 25.50 },
+  { value: "vordingborg", label: "Vordingborg", rate: 26.30 },
+  { value: "aeroe", label: "Ærø", rate: 26.10 },
+  { value: "alleroed", label: "Allerød", rate: 25.30 },
+  { value: "fredensborg", label: "Fredensborg", rate: 25.30 },
+  { value: "furesoe", label: "Furesø", rate: 24.88 },
+  { value: "lejre", label: "Lejre", rate: 25.31 },
+];
+
+const municipalityRates: Record<string, number> = municipalities.reduce((acc, m) => {
+  acc[m.value] = m.rate;
+  return acc;
+}, {} as Record<string, number>);
+
+const municipalityNames: Record<string, string> = municipalities.reduce((acc, m) => {
+  acc[m.value] = m.label;
+  return acc;
+}, {} as Record<string, string>);
+
 const numberInputClass = "flex-1 px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
 const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,8 +152,10 @@ const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
 export default function DenmarkCalculator() {
   const [grossIncome, setGrossIncome] = useState("");
   const [incomeFrequency, setIncomeFrequency] = useState("per-year");
-  const [municipalityTaxRate, setMunicipalityTaxRate] = useState("25.049");
+  const [taxYear, setTaxYear] = useState("2026");
+  const [municipality, setMunicipality] = useState("");
   const [churchTax, setChurchTax] = useState(false);
+  const [personalAllowance, setPersonalAllowance] = useState(true);
   const [pensionType, setPensionType] = useState<"default" | "amount" | "percentage">("default");
   const [pensionValue, setPensionValue] = useState("");
   const [result, setResult] = useState<CalculationResult | null>(null);
@@ -60,8 +175,10 @@ export default function DenmarkCalculator() {
         body: JSON.stringify({
           grossIncome: parseFloat(grossIncome) || 0,
           frequency: incomeFrequency === "per-year" ? "year" : "month",
-          municipalityTaxRate: parseFloat(municipalityTaxRate) || 25.049,
+          municipalityTaxRate: municipality ? municipalityRates[municipality] || 25.049 : 25.049,
           churchTax,
+          personalAllowance,
+          taxYear,
           pensionType,
           pensionValue: parseFloat(pensionValue) || 0,
         }),
@@ -152,8 +269,8 @@ export default function DenmarkCalculator() {
               Tax Year
             </label>
             <CustomSelect
-              value="2026"
-              onValueChange={() => {}}
+              value={taxYear}
+              onValueChange={setTaxYear}
               options={[
                 { value: "2026", label: "2026" },
                 { value: "2025", label: "2025" },
@@ -163,19 +280,33 @@ export default function DenmarkCalculator() {
             />
           </div>
 
+          {/* Personal Allowance */}
+          <div className="flex items-center gap-3">
+            <Checkbox 
+              checked={personalAllowance}
+              onCheckedChange={(checked) => setPersonalAllowance(checked as boolean)}
+              className="w-5 h-5 border-[#2ecc71] data-[state=checked]:bg-[#f1c40f] data-[state=checked]:text-[#020806] data-[state=checked]:border-[#f1c40f]"
+            />
+            <label className="text-base text-[#2ecc71]">
+              Personal allowance ({taxYear === "2025" ? "51,600" : "54,100"} DKK)
+            </label>
+          </div>
+
           {/* Municipality Tax Rate */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Municipality Tax Rate (%)
+              Municipality
             </label>
-            <Input
-              type="number"
-              min={0}
-              value={municipalityTaxRate}
-              onChange={(e) => setMunicipalityTaxRate(e.target.value)}
-              onKeyDown={preventNegative}
-              placeholder="25.049"
-              className={numberInputClass}
+            <SearchableSelect
+              value={municipality}
+              onValueChange={setMunicipality}
+              options={municipalities}
+              placeholder="Select municipality"
+              className="w-full md:w-[280px]"
+              formatSelected={(option) => {
+                const rate = municipalityRates[option.value];
+                return `${option.label} - ${rate}%`;
+              }}
             />
           </div>
 
@@ -285,6 +416,22 @@ export default function DenmarkCalculator() {
                 </table>
               </div>
             </div>
+
+            {/* Personal Allowance & Taxable Income */}
+            {result.breakdown.personalAllowance > 0 && (
+              <div className="mb-8">
+                <div className="bg-[#020806] rounded-lg p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[#2ecc71]">Personal Allowance</span>
+                    <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.personalAllowance)}</span>
+                  </div>
+                  <div className="flex justify-between items-center border-t border-[#2ecc71]/20 pt-2">
+                    <span className="text-[#2ecc71] font-bold">Taxable Income</span>
+                    <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.taxableIncome)}</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Deductions - State Taxes */}
             <div className="mb-8 -mx-2 md:mx-0">
