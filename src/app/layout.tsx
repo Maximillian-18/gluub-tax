@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import { Analytics } from "@vercel/analytics/next";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({
       >
         <Navigation />
         {children}
+        <Analytics />
       </body>
     </html>
   );
