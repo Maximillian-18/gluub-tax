@@ -160,10 +160,13 @@ setLoading(false);
       <main className="flex-1 flex flex-col items-center px-4 md:px-8 py-8 md:py-12 pt-20 md:pt-24 gap-8 md:gap-12">
         {/* Form Section */}
         <div className="w-full max-w-2xl">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-[#2ecc71]">
-              2025 Income tax calculator
+            <div className="mb-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-2">
+              2026 UK Take Home Pay Calculator
             </h1>
+            <p className="text-[#2ecc71]/70 text-sm mb-4">
+              Calculate your take home pay in the UK (2026)
+            </p>
             <CustomSelect
               value={region}
               onValueChange={setRegion}
