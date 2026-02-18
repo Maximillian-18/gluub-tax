@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     description: "Calculate your take home pay with our free, accurate tax calculators for UK, Denmark, and Germany.",
     images: [
       {
-        url: "/og-image.svg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Gluub Tax Calculators",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Gluub - Free Tax Calculators",
     description: "Calculate your take home pay with our free tax calculators.",
-    images: ["/og-image.svg"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://gluub.com",
