@@ -54,6 +54,10 @@ export const metadata: Metadata = {
       de: "https://gluub.com/calculator/germany",
     },
   },
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

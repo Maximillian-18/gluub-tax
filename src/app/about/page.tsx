@@ -6,48 +6,39 @@ export default function About() {
       <main className="flex-1 px-4 md:px-8 py-12 pt-24 md:pt-28 max-w-4xl mx-auto w-full">
         
         {/* Hero Section */}
-        <section className="text-center mb-16">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#2ecc71] mb-6">
+        <section className="mb-16">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#2ecc71] mb-6 text-center">
             About Gluub
           </h1>
-          <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
+          <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20 text-left">
             <p className="text-lg text-[#2ecc71]/90 leading-relaxed mb-4">
-              Gluub is a simple to use tax calculator that helps you find out what your take home pay is. We use current tax rates gathered from official government sources to accurately calculate your take home pay.
+              Hi, I'm Max. I created Gluub as a fun project to help people better understand their take-home pay and income tax.
+            </p>
+            <p className="text-lg text-[#2ecc71]/90 leading-relaxed mb-4">
+              Like many people, I'm always curious about where my money goes and how much I actually receive. Whether I'm negotiating a pay rise, starting a new job, or calculating a bonus, understanding my real income helps me plan my life with more confidence.
             </p>
             <p className="text-lg text-[#2ecc71]/90 leading-relaxed">
-              We currently offer tax calculators for the UK, Germany, and Denmark. We'll keep adding more countries as we see demand and do the research!
+              That's why I built Gluub — a clean, straightforward platform that brings multiple tax calculators together in one place. If you need access to different calculators, you won't have to jump between multiple sites.
             </p>
           </div>
         </section>
 
-        {/* What We Do Section */}
+        {/* Why Gluub Section */}
         <section className="mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6 text-center">
-            What Can You Calculate?
+            Why Gluub?
           </h2>
           <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
-            <ul className="grid md:grid-cols-2 gap-4">
-              {[
-                "Income Tax (country-specific rates)",
-                "National Insurance contributions (UK)",
-                "Pension contributions",
-                "Health insurance deductions",
-                "Detailed tax breakdowns",
-                "Social insurance deductions"
-              ].map((item, index) => (
-                <li key={index} className="flex items-center gap-3">
-                  <span className="text-[#2ecc71]">✓</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            <p className="text-lg text-[#2ecc71]/90 leading-relaxed">
+              Data is pulled from government sites to ensure the formulas are as accurate as possible. While there may still be some inaccuracies, I'm continually researching and working with tax professionals to make the calculators as reliable as they can be.
+            </p>
           </div>
         </section>
 
         {/* How It Works Section */}
         <section className="mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6 text-center">
-            Simple as 1-2-3
+            How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
@@ -78,27 +69,15 @@ export default function About() {
           </div>
         </section>
 
-        {/* Why Trust Gluub Section */}
-        <section className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6 text-center">
-            Accurate & Up-to-Date
-          </h2>
-          <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20 text-center">
-            <p className="text-lg text-[#2ecc71]/90 leading-relaxed">
-              We pull our tax rates directly from official government sources to ensure you&apos;re getting the most accurate calculation possible. Our calculators are updated for the 2025-2026 tax year.
-            </p>
-          </div>
-        </section>
-
         {/* Privacy & Security Section */}
         <section className="mb-16">
           <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6 text-center">
             Your Privacy Matters
           </h2>
           <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
-            <h3 className="font-bold text-lg mb-4">We Don&apos;t Store Your Data</h3>
+            <h3 className="font-bold text-lg mb-4">We Don't Store Your Data</h3>
             <p className="text-[#2ecc71]/80 mb-6">
-              Unlike many websites, we don&apos;t collect or store your salary information. When you use our calculator:
+              Unlike many websites, we don't collect or store your salary information. When you use our calculator:
             </p>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
@@ -128,20 +107,19 @@ export default function About() {
           </div>
         </section>
 
-        {/* Call to Action Section */}
-        <section className="mb-16 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-6">
-            Ready to Calculate?
-          </h2>
-          <p className="text-lg text-[#2ecc71]/80 mb-8">
-            Find out exactly how much you&apos;ll take home. No sign-up, no fuss, just accurate numbers.
-          </p>
-          <Link 
-            href="/"
-            className="inline-block px-8 py-4 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
-          >
-            Try the Calculator
-          </Link>
+        {/* Disclaimer Section */}
+        <section className="mb-16">
+          <div className="bg-[#e74c3c]/5 border-l-4 border-[#e74c3c] rounded-r-xl p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-bold text-[#2ecc71] mb-4">
+              Important Note
+            </h2>
+            <p className="text-[#2ecc71]/90 leading-relaxed mb-4">
+              While Gluub provides reliable estimates, individual tax situations vary. For complex tax matters or personalized advice, we always recommend consulting with a qualified tax professional.
+            </p>
+            <p className="text-[#2ecc71]/70 text-sm">
+              <strong>Disclaimer:</strong> Gluub's calculators provide estimates for informational purposes only. They should not be considered financial or tax advice. Always consult a qualified tax professional for your specific situation.
+            </p>
+          </div>
         </section>
 
       </main>

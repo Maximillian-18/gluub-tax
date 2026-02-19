@@ -1,318 +1,187 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { useScrollSpy } from "./components/useScrollSpy";
+import InfoLayoutWrapper from "./components/InfoLayoutWrapper";
 
-export default function Info() {
-  const [openSection, setOpenSection] = useState<string | null>(null);
+const sectionIds = [
+  "what-is-income-tax",
+  "how-tax-calculated",
+  "tax-brackets",
+];
 
-  const toggleSection = (section: string) => {
-    setOpenSection(openSection === section ? null : section);
-  };
+export default function InfoPage() {
+  const activeSection = useScrollSpy(sectionIds, 0.6);
 
   return (
-    <div className="min-h-screen bg-[#020806] text-[#2ecc71] flex flex-col">
-      <main className="flex-1 px-4 md:px-8 py-12 pt-24 max-w-4xl mx-auto w-full">
+    <InfoLayoutWrapper scrollSpyActiveId={activeSection}>
+      <InfoContent />
+    </InfoLayoutWrapper>
+  );
+}
+
+function InfoContent() {
+  return (
+    <article className="prose prose-invert max-w-none">
+      <header className="mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#2ecc71] mb-4">
+          Tax Information
+        </h1>
+        <p className="text-[#2ecc71]/70 text-lg">
+          Everything you need to understand income tax, tax brackets, and how your salary is calculated
+        </p>
+      </header>
+
+      {/* Introduction */}
+      <section id="what-is-income-tax" className="mb-12 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
+          What is Income Tax?
+        </h2>
+        <p className="text-[#2ecc71]/80 mb-4 leading-relaxed">
+          Income tax is money you pay to the government based on how much you earn. It's one of the main ways governments fund public services like healthcare, education, roads, and infrastructure. Most people pay income tax automatically through their employer before they receive their salary.
+        </p>
+        <p className="text-[#2ecc71]/80 leading-relaxed">
+          The amount of tax you pay depends on several factors: how much you earn, which country you live in, your tax code, and any deductions or allowances you're entitled to.
+        </p>
+      </section>
+
+      {/* How Tax is Calculated */}
+      <section id="how-tax-calculated" className="mb-12 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
+          How is Tax Calculated?
+        </h2>
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-[#2ecc71] mb-4">
-            Tax Information & Resources
-          </h1>
-          <p className="text-lg text-[#2ecc71]/70">
-            Official resources and country-specific tax information
+        <div className="bg-[#020806] border border-[#2ecc71]/20 rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-[#2ecc71] mb-4">The Basic Formula</h3>
+          <div className="space-y-3 font-mono text-sm">
+            <p className="text-[#2ecc71]/70">1. Start with your Gross Income (total earnings)</p>
+            <p className="text-[#2ecc71]/70">2. Subtract your Personal Allowance (tax-free amount)</p>
+            <p className="text-[#2ecc71]/70">3. Apply tax rates to each portion of remaining income</p>
+            <p className="text-[#2ecc71]">4. Result = Your Income Tax</p>
+          </div>
+        </div>
+
+        <p className="text-[#2ecc71]/80 mb-4 leading-relaxed">
+          Tax is calculated in bands or brackets. You don't pay the same rate on all your income. Instead, you pay different rates on different portions of your earnings. This is called a progressive tax system.
+        </p>
+
+        <div className="bg-[#2ecc71]/5 border-l-4 border-[#2ecc71] p-4 rounded-r-lg">
+          <p className="text-[#2ecc71]/90 text-sm">
+            <strong>Example:</strong> If the tax-free allowance is £12,570 and you earn £30,000, you only pay tax on £17,430 (£30,000 - £12,570). The first portion might be taxed at 20%, and higher portions at higher rates.
           </p>
         </div>
+      </section>
 
-        {/* General Information */}
-        <section className="mb-12">
-          <div className="bg-[#0a1f15] rounded-xl p-6 md:p-8 border border-[#2ecc71]/20">
-            <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
-              About These Calculations
-            </h2>
-            <div className="space-y-4 text-[#2ecc71]/80">
-              <p>
-                Our tax calculators provide estimates based on official government tax rates for each country. 
-                While we strive for accuracy, individual circumstances may vary.
-              </p>
-              <p>
-                <strong className="text-[#2ecc71]">Disclaimer:</strong> These calculations are for informational purposes only. 
-                For exact figures and complex tax situations, please consult a qualified tax professional.
-              </p>
-              <p>
-                Tax rates are updated annually for each tax year. Last updated: 2025-2026.
-              </p>
-            </div>
-          </div>
-        </section>
+      {/* Understanding Tax Brackets */}
+      <section id="tax-brackets" className="mb-12 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
+          Understanding Tax Brackets
+        </h2>
+        
+        <p className="text-[#2ecc71]/80 mb-6 leading-relaxed">
+          Tax brackets divide your income into portions, with each portion taxed at a different rate. As you earn more, you move into higher brackets, but only the income within each bracket is taxed at that rate.
+        </p>
 
-        {/* UK Section */}
-        <section className="mb-6">
-          <button
-            onClick={() => toggleSection("uk")}
-            className="w-full flex items-center justify-between bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20 hover:border-[#2ecc71]/40 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">🇬🇧</span>
-              <h2 className="text-xl font-bold text-[#2ecc71]">United Kingdom</h2>
-            </div>
-            <ChevronDown 
-              className={`w-6 h-6 text-[#2ecc71] transition-transform ${openSection === "uk" ? "rotate-180" : ""}`} 
-            />
-          </button>
-          
-          {openSection === "uk" && (
-            <div className="mt-2 bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20">
-              <div className="space-y-6">
-                {/* Official Links */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-3">Official Resources</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <a 
-                        href="https://www.gov.uk/hmrc" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        HM Revenue & Customs (HMRC) →
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        href="https://www.gov.uk/income-tax" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        Income Tax Guide →
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        href="https://www.gov.uk/calculate-income-tax" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        Income Tax Calculator (Official) →
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Tax Year */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Tax Year</h3>
-                  <p className="text-[#2ecc71]/80">
-                    6 April to 5 April (e.g., 2025-2026 tax year runs 6 April 2025 to 5 April 2026)
-                  </p>
-                </div>
-
-                {/* Personal Allowance Taper */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Personal Allowance Taper</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Your personal allowance (currently £12,570) reduces by £1 for every £2 you earn over £100,000. 
-                    This means your personal allowance is completely removed once your income reaches £125,140 or more.
-                  </p>
-                </div>
-
-                {/* National Insurance */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">National Insurance</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Employees pay National Insurance on earnings above the Primary Threshold. 
-                    Rates and thresholds are reviewed annually in the Spring Budget.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        {/* Germany Section */}
-        <section className="mb-6">
-          <button
-            onClick={() => toggleSection("germany")}
-            className="w-full flex items-center justify-between bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20 hover:border-[#2ecc71]/40 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">🇩🇪</span>
-              <h2 className="text-xl font-bold text-[#2ecc71]">Germany</h2>
-            </div>
-            <ChevronDown 
-              className={`w-6 h-6 text-[#2ecc71] transition-transform ${openSection === "germany" ? "rotate-180" : ""}`} 
-            />
-          </button>
-          
-          {openSection === "germany" && (
-            <div className="mt-2 bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20">
-              <div className="space-y-6">
-                {/* Official Links */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-3">Official Resources</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <a 
-                        href="https://www.bzst.de/" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        Bundeszentralamt für Steuern (BZSt) →
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        href="https://www.elster.de/" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        ELSTER (Electronic Tax Return) →
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        href="https://www.bundesfinanzministerium.de/Content/DE/Standardartikel/Steuern/steuerarten/lohnsteuer/lohnsteuerklassen.html" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        Tax Classes (Lohnsteuerklassen) →
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Tax Year */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Tax Year</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Calendar year (1 January to 31 December). Tax returns are typically due by 31 July of the following year.
-                  </p>
-                </div>
-
-                {/* Tax Classes */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Tax Classes (Lohnsteuerklassen)</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Germany uses six tax classes (I-VI) based on marital status and income situation. 
-                    Class I is for single persons, Class III/IV for married couples, etc.
-                  </p>
-                </div>
-
-                {/* Social Contributions */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Social Insurance</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Employees and employers each pay roughly half of the social insurance contributions, 
-                    covering health insurance, pension insurance, nursing care insurance, and unemployment insurance.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        {/* Denmark Section */}
-        <section className="mb-6">
-          <button
-            onClick={() => toggleSection("denmark")}
-            className="w-full flex items-center justify-between bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20 hover:border-[#2ecc71]/40 transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">🇩🇰</span>
-              <h2 className="text-xl font-bold text-[#2ecc71]">Denmark</h2>
-            </div>
-            <ChevronDown 
-              className={`w-6 h-6 text-[#2ecc71] transition-transform ${openSection === "denmark" ? "rotate-180" : ""}`} 
-            />
-          </button>
-          
-          {openSection === "denmark" && (
-            <div className="mt-2 bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20">
-              <div className="space-y-6">
-                {/* Official Links */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-3">Official Resources</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <a 
-                        href="https://skat.dk/" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        SKAT (Danish Tax Authority) →
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        href="https://www.tastselv.skat.dk/" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        TastSelv (Self-Service Tax Portal) →
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        href="https://skat.dk/en-us/help/tax-rates" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[#2ecc71]/80 hover:text-[#2ecc71] underline hover:no-underline"
-                      >
-                        Tax Rates (Official) →
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Tax Year */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Tax Year</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Calendar year (1 January to 31 December). Tax returns are typically due by 1 May of the following year.
-                  </p>
-                </div>
-
-                {/* Tax System */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">Danish Tax System</h3>
-                  <p className="text-[#2ecc71]/80">
-                    Denmark has a progressive tax system with municipal taxes (kommuneskat), county taxes (regionsskat), 
-                    and state taxes (statsskat). The total tax rate varies by municipality, typically between 30-40%.
-                  </p>
-                </div>
-
-                {/* ATP */}
-                <div>
-                  <h3 className="text-lg font-bold text-[#2ecc71] mb-2">ATP (Labour Market Pension)</h3>
-                  <p className="text-[#2ecc71]/80">
-                    All employees in Denmark must contribute to ATP, a supplementary pension scheme. 
-                    Contributions are split between employer and employee.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
-
-        {/* Back to Calculator */}
-        <div className="text-center mt-12">
-          <Link 
-            href="/"
-            className="inline-block px-8 py-4 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
-          >
-            Calculate Your Taxes
-          </Link>
+        <div className="bg-[#020806] border border-[#2ecc71]/20 rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-[#2ecc71] mb-4">How Tax Brackets Work</h3>
+          <p className="text-[#2ecc71]/80 mb-4">
+            Let's say the tax brackets are:
+          </p>
+          <ul className="space-y-2 text-[#2ecc71]/70 mb-4">
+            <li>• 0% on income up to £12,570 (Personal Allowance)</li>
+            <li>• 20% on income from £12,571 to £50,270</li>
+            <li>• 40% on income from £50,271 to £125,140</li>
+            <li>• 45% on income above £125,140</li>
+          </ul>
+          <p className="text-[#2ecc71]/80">
+            If you earn £60,000:
+          </p>
+          <ul className="space-y-2 text-[#2ecc71]/70 mt-3">
+            <li>• £12,570 is tax-free</li>
+            <li>• £37,700 (£50,270 - £12,570) is taxed at 20% = £7,540</li>
+            <li>• £9,730 (£60,000 - £50,270) is taxed at 40% = £3,892</li>
+            <li>• <strong>Total tax: £11,432</strong></li>
+          </ul>
         </div>
 
-      </main>
-    </div>
+        <div className="bg-[#e74c3c]/5 border-l-4 border-[#e74c3c] p-4 rounded-r-lg">
+          <p className="text-[#2ecc71]/90 text-sm">
+            <strong>Important:</strong> Moving into a higher tax bracket doesn't mean all your income is taxed at the higher rate. Only the portion that falls within that bracket is taxed at the higher rate. You never lose money by earning more!
+          </p>
+        </div>
+      </section>
+
+      {/* Country Guides */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
+          Country-Specific Guides
+        </h2>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          <a
+            href="/info/uk"
+            className="group block p-6 bg-[#020806] border border-[#2ecc71]/30 rounded-lg hover:border-[#2ecc71] transition-colors"
+          >
+            <h3 className="text-lg font-bold text-[#2ecc71] mb-2 group-hover:text-[#2ecc71]/80">
+              United Kingdom
+            </h3>
+            <p className="text-[#2ecc71]/60 text-sm">
+              Tax brackets, Personal Allowance, National Insurance, and tax codes explained
+            </p>
+          </a>
+
+          <div className="p-6 bg-[#020806]/50 border border-[#2ecc71]/10 rounded-lg opacity-60">
+            <h3 className="text-lg font-bold text-[#2ecc71]/50 mb-2">
+              Germany
+            </h3>
+            <p className="text-[#2ecc71]/40 text-sm">
+              Coming soon
+            </p>
+          </div>
+
+          <div className="p-6 bg-[#020806]/50 border border-[#2ecc71]/10 rounded-lg opacity-60">
+            <h3 className="text-lg font-bold text-[#2ecc71]/50 mb-2">
+              Denmark
+            </h3>
+            <p className="text-[#2ecc71]/40 text-sm">
+              Coming soon
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Key Terms */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
+          Key Terms Explained
+        </h2>
+
+        <div className="space-y-4">
+          <div className="border-b border-[#2ecc71]/20 pb-4">
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-2">Gross Income</h3>
+            <p className="text-[#2ecc71]/80">Your total earnings before any deductions (tax, National Insurance, pension, etc.)</p>
+          </div>
+
+          <div className="border-b border-[#2ecc71]/20 pb-4">
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-2">Net Income / Take Home Pay</h3>
+            <p className="text-[#2ecc71]/80">What you actually receive after all deductions have been taken</p>
+          </div>
+
+          <div className="border-b border-[#2ecc71]/20 pb-4">
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-2">Personal Allowance</h3>
+            <p className="text-[#2ecc71]/80">The amount you can earn each year without paying any income tax</p>
+          </div>
+
+          <div className="border-b border-[#2ecc71]/20 pb-4">
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-2">Tax Code</h3>
+            <p className="text-[#2ecc71]/80">A code used by your employer to calculate how much tax to deduct (e.g., 1257L)</p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-2">Marginal Tax Rate</h3>
+            <p className="text-[#2ecc71]/80">The tax rate that applies to your highest portion of income</p>
+          </div>
+        </div>
+      </section>
+    </article>
   );
 }

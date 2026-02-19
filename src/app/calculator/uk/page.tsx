@@ -173,8 +173,6 @@ setLoading(false);
               options={[
                 { value: "england", label: "England" },
                 { value: "scotland", label: "Scotland" },
-                { value: "wales", label: "Wales" },
-                { value: "northern-ireland", label: "Northern Ireland" },
               ]}
               placeholder="Select region"
               className="w-full md:w-[200px]"
