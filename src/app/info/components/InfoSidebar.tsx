@@ -39,7 +39,15 @@ const menuStructure: MenuSection[] = [
   {
     label: "Germany",
     href: "/info/germany",
-    items: undefined,
+    items: [
+      { label: "Tax Basics", href: "/info/germany#basics", sectionId: "basics" },
+      { label: "2026 Tax Brackets", href: "/info/germany#tax-brackets", sectionId: "tax-brackets" },
+      { label: "Tax Classes", href: "/info/germany#tax-classes", sectionId: "tax-classes" },
+      { label: "Social Security", href: "/info/germany#social-security", sectionId: "social-security" },
+      { label: "Church Tax", href: "/info/germany#church-tax", sectionId: "church-tax" },
+      { label: "Solidarity Surcharge", href: "/info/germany#solidarity-surcharge", sectionId: "solidarity-surcharge" },
+      { label: "Your Payslip", href: "/info/germany#payslip", sectionId: "payslip" },
+    ],
   },
   {
     label: "Denmark",

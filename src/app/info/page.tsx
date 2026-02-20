@@ -32,8 +32,8 @@ function InfoContent() {
       </header>
 
       {/* Introduction */}
-      <section id="what-is-income-tax" className="mb-12 scroll-mt-28">
-        <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
+      <section id="what-is-income-tax" className="mb-16 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
           What is Income Tax?
         </h2>
         <p className="text-[#2ecc71]/80 mb-4 leading-relaxed">
@@ -45,13 +45,13 @@ function InfoContent() {
       </section>
 
       {/* How Tax is Calculated */}
-      <section id="how-tax-calculated" className="mb-12 scroll-mt-28">
-        <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
+      <section id="how-tax-calculated" className="mb-16 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
           How is Tax Calculated?
         </h2>
         
         <div className="bg-[#020806] border border-[#2ecc71]/20 rounded-lg p-6 mb-6">
-          <h3 className="text-lg font-semibold text-[#2ecc71] mb-4">The Basic Formula</h3>
+          <h3 className="text-lg font-semibold text-[#2ecc71] mt-8 mb-4">The Basic Formula</h3>
           <div className="space-y-3 font-mono text-sm">
             <p className="text-[#2ecc71]/70">1. Start with your Gross Income (total earnings)</p>
             <p className="text-[#2ecc71]/70">2. Subtract your Personal Allowance (tax-free amount)</p>
@@ -72,35 +72,103 @@ function InfoContent() {
       </section>
 
       {/* Understanding Tax Brackets */}
-      <section id="tax-brackets" className="mb-12 scroll-mt-28">
-        <h2 className="text-2xl font-bold text-[#2ecc71] mb-4">
+      <section id="tax-brackets" className="mb-16 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
           Understanding Tax Brackets
         </h2>
         
         <p className="text-[#2ecc71]/80 mb-6 leading-relaxed">
-          Tax brackets divide your income into portions, with each portion taxed at a different rate. As you earn more, you move into higher brackets, but only the income within each bracket is taxed at that rate.
+          Tax brackets divide your income into portions, with each portion taxed at a different rate. As you earn more, you move into higher brackets, but only the income within each bracket is taxed at that rate. Different countries use different approaches to structuring their tax brackets.
         </p>
 
-        <div className="bg-[#020806] border border-[#2ecc71]/20 rounded-lg p-6 mb-6">
-          <h3 className="text-lg font-semibold text-[#2ecc71] mb-4">How Tax Brackets Work</h3>
-          <p className="text-[#2ecc71]/80 mb-4">
-            Let's say the tax brackets are:
-          </p>
-          <ul className="space-y-2 text-[#2ecc71]/70 mb-4">
-            <li>• 0% on income up to £12,570 (Personal Allowance)</li>
-            <li>• 20% on income from £12,571 to £50,270</li>
-            <li>• 40% on income from £50,271 to £125,140</li>
-            <li>• 45% on income above £125,140</li>
-          </ul>
-          <p className="text-[#2ecc71]/80">
-            If you earn £60,000:
-          </p>
-          <ul className="space-y-2 text-[#2ecc71]/70 mt-3">
-            <li>• £12,570 is tax-free</li>
-            <li>• £37,700 (£50,270 - £12,570) is taxed at 20% = £7,540</li>
-            <li>• £9,730 (£60,000 - £50,270) is taxed at 40% = £3,892</li>
-            <li>• <strong>Total tax: £11,432</strong></li>
-          </ul>
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          {/* Fixed/Step Tax Brackets */}
+          <div className="bg-[#020806] border border-[#2ecc71]/20 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-4">Fixed (Step) Tax Brackets</h3>
+            <p className="text-[#2ecc71]/70 text-sm mb-4">
+              Used in: UK, USA, Denmark, and many others
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-[#2ecc71]/30 text-sm">
+                <thead>
+                  <tr className="bg-[#2ecc71]/10">
+                    <th className="border border-[#2ecc71]/30 px-3 py-2 text-left text-[#2ecc71]">Tax Band</th>
+                    <th className="border border-[#2ecc71]/30 px-3 py-2 text-left text-[#2ecc71]">Income Range</th>
+                    <th className="border border-[#2ecc71]/30 px-3 py-2 text-left text-[#2ecc71]">Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="text-[#2ecc71]/80">
+                  <tr>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Band 1</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">€0 - €10,000</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">0%</td>
+                  </tr>
+                  <tr className="bg-[#2ecc71]/5">
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Band 2</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">€10,001 - €30,000</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">20%</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Band 3</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">€30,001 - €60,000</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">30%</td>
+                  </tr>
+                  <tr className="bg-[#2ecc71]/5">
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Band 4</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Over €60,000</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">40%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-[#2ecc71]/60 text-xs mt-3">
+              Each bracket has a fixed rate. If you earn €40,000, you pay 0% on first €10,000, 20% on next €20,000, and 30% on final €10,000.
+            </p>
+          </div>
+
+          {/* Progressive Tax Rates */}
+          <div className="bg-[#020806] border border-[#2ecc71]/20 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-[#2ecc71] mb-4">Progressive Tax Rates</h3>
+            <p className="text-[#2ecc71]/70 text-sm mb-4">
+              Used in: Germany and some other countries
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-[#2ecc71]/30 text-sm">
+                <thead>
+                  <tr className="bg-[#2ecc71]/10">
+                    <th className="border border-[#2ecc71]/30 px-3 py-2 text-left text-[#2ecc71]">Zone</th>
+                    <th className="border border-[#2ecc71]/30 px-3 py-2 text-left text-[#2ecc71]">Income Range</th>
+                    <th className="border border-[#2ecc71]/30 px-3 py-2 text-left text-[#2ecc71]">Rate Range</th>
+                  </tr>
+                </thead>
+                <tbody className="text-[#2ecc71]/80">
+                  <tr>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Basic</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Up to €12,348</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">0%</td>
+                  </tr>
+                  <tr className="bg-[#2ecc71]/5">
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Zone 1</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">€12,349 - €17,799</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">14% - 24%</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Zone 2</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">€17,800 - €69,878</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">24% - 42%</td>
+                  </tr>
+                  <tr className="bg-[#2ecc71]/5">
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">Zone 3</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">€69,879+</td>
+                    <td className="border border-[#2ecc71]/30 px-3 py-2">42%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-[#2ecc71]/60 text-xs mt-3">
+              Uses mathematical formulas to smoothly increase the tax rate within each zone. Rates gradually rise from 14% to 24%, then 24% to 42%.
+            </p>
+          </div>
         </div>
 
         <div className="bg-[#e74c3c]/5 border-l-4 border-[#e74c3c] p-4 rounded-r-lg">
@@ -110,48 +178,9 @@ function InfoContent() {
         </div>
       </section>
 
-      {/* Country Guides */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
-          Country-Specific Guides
-        </h2>
-        
-        <div className="grid md:grid-cols-3 gap-6">
-          <a
-            href="/info/uk"
-            className="group block p-6 bg-[#020806] border border-[#2ecc71]/30 rounded-lg hover:border-[#2ecc71] transition-colors"
-          >
-            <h3 className="text-lg font-bold text-[#2ecc71] mb-2 group-hover:text-[#2ecc71]/80">
-              United Kingdom
-            </h3>
-            <p className="text-[#2ecc71]/60 text-sm">
-              Tax brackets, Personal Allowance, National Insurance, and tax codes explained
-            </p>
-          </a>
-
-          <div className="p-6 bg-[#020806]/50 border border-[#2ecc71]/10 rounded-lg opacity-60">
-            <h3 className="text-lg font-bold text-[#2ecc71]/50 mb-2">
-              Germany
-            </h3>
-            <p className="text-[#2ecc71]/40 text-sm">
-              Coming soon
-            </p>
-          </div>
-
-          <div className="p-6 bg-[#020806]/50 border border-[#2ecc71]/10 rounded-lg opacity-60">
-            <h3 className="text-lg font-bold text-[#2ecc71]/50 mb-2">
-              Denmark
-            </h3>
-            <p className="text-[#2ecc71]/40 text-sm">
-              Coming soon
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Key Terms */}
       <section className="mb-12">
-        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
           Key Terms Explained
         </h2>
 

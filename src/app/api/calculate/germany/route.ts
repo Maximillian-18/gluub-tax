@@ -93,17 +93,17 @@ function calculateGermanTax(annualIncome: number, personalAllowance: number): { 
   }
   
   const y = (taxableIncome - 12348) / 10000;
-  const z = (taxableIncome - 17005) / 10000;
+  const z = (taxableIncome - 17799) / 10000;
   
   let incomeTax: number;
-  if (taxableIncome <= 17005) {
+  if (taxableIncome <= 17799) {
     incomeTax = (914.51 * y + 1400) * y;
-  } else if (taxableIncome <= 66760) {
-    incomeTax = (176.64 * z + 2397) * z + 1015.13;
+  } else if (taxableIncome <= 69878) {
+    incomeTax = (173.10 * z + 2397) * z + 1034.87;
   } else if (taxableIncome <= 277825) {
-    incomeTax = 0.42 * taxableIncome - 9236.64;
+    incomeTax = 0.42 * taxableIncome - 11135.63;
   } else {
-    incomeTax = 0.45 * taxableIncome - 17571.13;
+    incomeTax = 0.45 * taxableIncome - 19470.38;
   }
   
   return { incomeTax, taxableIncome };

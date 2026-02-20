@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CustomSelect } from "@/components/CustomSelect";
+import { SearchableSelect } from "@/components/SearchableSelect";
 import { Button } from "@/components/ui/button";
 
 interface CalculationResult {
@@ -38,22 +39,22 @@ const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
 };
 
 const GERMAN_STATES = [
-  { value: "baden-wurttemberg", label: "Baden-Württemberg" },
-  { value: "bayern", label: "Bayern" },
-  { value: "berlin", label: "Berlin" },
-  { value: "brandenburg", label: "Brandenburg" },
-  { value: "bremen", label: "Bremen" },
-  { value: "hamburg", label: "Hamburg" },
-  { value: "hessen", label: "Hessen" },
-  { value: "mecklenburg-vorpommern", label: "Mecklenburg-Vorpommern" },
-  { value: "niedersachsen", label: "Niedersachsen" },
-  { value: "nordrhein-westfalen", label: "Nordrhein-Westfalen" },
-  { value: "rheinland-pfalz", label: "Rheinland-Pfalz" },
-  { value: "saarland", label: "Saarland" },
-  { value: "sachsen", label: "Sachsen" },
-  { value: "sachsen-anhalt", label: "Sachsen-Anhalt" },
-  { value: "schleswig-holstein", label: "Schleswig-Holstein" },
-  { value: "thuringen", label: "Thüringen" },
+  { value: "baden-wurttemberg", label: "Baden-Württemberg", rate: 8 },
+  { value: "bayern", label: "Bayern", rate: 8 },
+  { value: "berlin", label: "Berlin", rate: 9 },
+  { value: "brandenburg", label: "Brandenburg", rate: 9 },
+  { value: "bremen", label: "Bremen", rate: 9 },
+  { value: "hamburg", label: "Hamburg", rate: 9 },
+  { value: "hessen", label: "Hessen", rate: 9 },
+  { value: "mecklenburg-vorpommern", label: "Mecklenburg-Vorpommern", rate: 9 },
+  { value: "niedersachsen", label: "Niedersachsen", rate: 9 },
+  { value: "nordrhein-westfalen", label: "Nordrhein-Westfalen", rate: 9 },
+  { value: "rheinland-pfalz", label: "Rheinland-Pfalz", rate: 9 },
+  { value: "saarland", label: "Saarland", rate: 9 },
+  { value: "sachsen", label: "Sachsen", rate: 9 },
+  { value: "sachsen-anhalt", label: "Sachsen-Anhalt", rate: 9 },
+  { value: "schleswig-holstein", label: "Schleswig-Holstein", rate: 9 },
+  { value: "thuringen", label: "Thüringen", rate: 9 },
 ];
 
 export default function GermanyCalculator() {
@@ -213,7 +214,7 @@ export default function GermanyCalculator() {
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
               State (Bundesland)
             </label>
-            <CustomSelect
+            <SearchableSelect
               value={state}
               onValueChange={setState}
               options={GERMAN_STATES}
