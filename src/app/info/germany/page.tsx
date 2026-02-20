@@ -6,6 +6,7 @@ import InfoLayoutWrapper from "../components/InfoLayoutWrapper";
 const sectionIds = [
   "basics",
   "tax-brackets",
+  "personal-allowance",
   "tax-classes",
   "social-security",
   "church-tax",
@@ -50,17 +51,6 @@ function GermanyTaxContent() {
           <p className="text-[#2ecc71]/80 leading-relaxed mb-4">
             You pay income tax if you earn more than the <strong>Grundfreibetrag</strong> (basic allowance) — the amount you can earn tax-free each year. For 2026, this is €12,348 for single taxpayers (€24,696 for married couples filing jointly).
           </p>
-
-          <div className="bg-[#2ecc71]/5 border border-[#2ecc71]/20 rounded-lg p-6">
-            <h4 className="text-lg font-semibold text-[#2ecc71] mb-3">Example Calculation</h4>
-            <p className="text-[#2ecc71]/80 mb-3">If you earn €50,000 per year:</p>
-            <ul className="space-y-2 text-[#2ecc71]/70">
-              <li>• First €12,348: Tax-free (0%) = €0</li>
-              <li>• €12,349 - €17,799: Taxed progressively (14-24%)</li>
-              <li>• €17,800 - €50,000: Taxed progressively (24-42%)</li>
-              <li>• <strong>Income tax paid: approximately €9,500</strong></li>
-            </ul>
-          </div>
 
           <h3 className="text-xl font-semibold text-[#2ecc71] mt-8 mb-4">The German Tax Year</h3>
           <p className="text-[#2ecc71]/80 leading-relaxed">
@@ -160,7 +150,33 @@ function GermanyTaxContent() {
         </div>
       </section>
 
-      {/* Section 3: Tax Classes */}
+      {/* Section 3: Personal Allowance */}
+      <section id="personal-allowance" className="mb-16 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
+          Basic Allowance (Grundfreibetrag)
+        </h2>
+        
+        <div className="space-y-6">
+          <p className="text-[#2ecc71]/80 leading-relaxed">
+            The <strong>Grundfreibetrag</strong> (basic allowance) is the amount of income you can earn tax-free in Germany. This is the portion of your income that is exempt from income tax and ensures a minimum standard of living.
+          </p>
+
+          <div className="bg-[#020806] border border-[#2ecc71]/30 rounded-lg p-6">
+            <h3 className="text-xl font-bold text-[#2ecc71] mb-4">2026 Basic Allowance</h3>
+            <p className="text-4xl font-bold text-[#2ecc71] mb-2">€12,348</p>
+            <p className="text-[#2ecc71]/70">This is the amount you can earn tax-free</p>
+            <p className="text-[#2ecc71]/60 text-sm mt-3">
+              For married couples filing jointly: €24,696
+            </p>
+          </div>
+
+          <p className="text-[#2ecc71]/60 text-sm">
+            In 2025, the basic allowance was €12,096. The allowance typically increases each year to account for inflation and cost of living adjustments.
+          </p>
+        </div>
+      </section>
+
+      {/* Section 4: Tax Classes */}
       <section id="tax-classes" className="mb-16 scroll-mt-28">
         <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
           Tax Classes (Steuerklassen)

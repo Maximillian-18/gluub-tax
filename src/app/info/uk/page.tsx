@@ -51,16 +51,6 @@ function UKTaxContent() {
             You pay income tax if you earn more than your <strong>Personal Allowance</strong> — the amount you can earn tax-free each year. For the 2025-2026 tax year, this is £12,570.
           </p>
 
-          <div className="bg-[#2ecc71]/5 border border-[#2ecc71]/20 rounded-lg p-6">
-            <h4 className="text-lg font-semibold text-[#2ecc71] mb-3">Example Calculation</h4>
-            <p className="text-[#2ecc71]/80 mb-3">If you earn £25,000 per year:</p>
-            <ul className="space-y-2 text-[#2ecc71]/70">
-              <li>• First £12,570: Tax-free (0%) = £0</li>
-              <li>• Remaining £12,430: Taxed at 20% (Basic Rate)</li>
-              <li>• <strong>Income tax paid: £2,486</strong></li>
-            </ul>
-          </div>
-
           <h3 className="text-xl font-semibold text-[#2ecc71] mt-8 mb-4">The UK Tax Year</h3>
           <p className="text-[#2ecc71]/80 leading-relaxed">
             The UK tax year runs from <strong>6 April to 5 April</strong> the following year. This is different from the calendar year. The 2025-2026 tax year, for example, runs from 6 April 2025 to 5 April 2026. This affects when new tax rates come into effect and when you need to file tax returns.

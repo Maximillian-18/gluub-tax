@@ -42,6 +42,7 @@ const menuStructure: MenuSection[] = [
     items: [
       { label: "Tax Basics", href: "/info/germany#basics", sectionId: "basics" },
       { label: "2026 Tax Brackets", href: "/info/germany#tax-brackets", sectionId: "tax-brackets" },
+      { label: "Basic Allowance", href: "/info/germany#personal-allowance", sectionId: "personal-allowance" },
       { label: "Tax Classes", href: "/info/germany#tax-classes", sectionId: "tax-classes" },
       { label: "Social Security", href: "/info/germany#social-security", sectionId: "social-security" },
       { label: "Church Tax", href: "/info/germany#church-tax", sectionId: "church-tax" },
