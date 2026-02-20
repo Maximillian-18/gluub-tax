@@ -24,6 +24,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
+  themeColor: "#020806",
   openGraph: {
     type: "website",
     locale: "en_GB",
@@ -49,9 +55,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://gluub.com",
     languages: {
-      en: "https://gluub.com",
-      da: "https://gluub.com/calculator/denmark",
-      de: "https://gluub.com/calculator/germany",
+      "en-GB": "https://gluub.com/calculator/uk",
+      "da-DK": "https://gluub.com/calculator/denmark",
+      "de-DE": "https://gluub.com/calculator/germany",
+      "x-default": "https://gluub.com",
     },
   },
   icons: {

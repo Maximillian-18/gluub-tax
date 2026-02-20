@@ -393,143 +393,36 @@ export default function GermanyCalculator() {
                 <div className="flex justify-between items-center border-t border-[#2ecc71]/20 pt-2">
                   <span className="text-[#2ecc71] font-bold">Taxable Income</span>
                   <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.taxableIncome)}</span>
-                </div>
-              </div>
-            </div>
+        </div>
 
-            {/* Deductions - Taxes */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Taxes</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <thead>
-                    <tr className="border-b border-[#2ecc71]/30">
-                      <th className="text-left py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Tax</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Weekly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Monthly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Wage Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.incomeTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.incomeTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.incomeTax)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Solidarity Surcharge</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.solidaritySurcharge / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.solidaritySurcharge / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.solidaritySurcharge)}</td>
-                    </tr>
-                    {result.deductions.churchTax > 0 && (
-                      <tr className="border-b border-[#2ecc71]/20">
-                        <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Church Tax</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.churchTax / 52)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.churchTax / 12)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.churchTax)}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Deductions - Social Insurance */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Social Insurance</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <thead>
-                    <tr className="border-b border-[#2ecc71]/30">
-                      <th className="text-left py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Deduction</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Weekly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Monthly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result.deductions.healthInsurance > 0 && (
-                      <tr className="border-b border-[#2ecc71]/20">
-                        <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Health Insurance</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.healthInsurance / 52)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.healthInsurance / 12)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.healthInsurance)}</td>
-                      </tr>
-                    )}
-                    {result.deductions.nursingCareInsurance > 0 && (
-                      <tr className="border-b border-[#2ecc71]/20">
-                        <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Nursing Care Insurance</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.nursingCareInsurance / 52)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.nursingCareInsurance / 12)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.nursingCareInsurance)}</td>
-                      </tr>
-                    )}
-                    {result.deductions.pensionInsurance > 0 && (
-                      <tr className="border-b border-[#2ecc71]/20">
-                        <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Pension Insurance</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.pensionInsurance / 52)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.pensionInsurance / 12)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.pensionInsurance)}</td>
-                      </tr>
-                    )}
-                    {result.deductions.unemploymentInsurance > 0 && (
-                      <tr className="border-b border-[#2ecc71]/20">
-                        <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Unemployment Insurance</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.unemploymentInsurance / 52)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.unemploymentInsurance / 12)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.unemploymentInsurance)}</td>
-                      </tr>
-                    )}
-                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-xs md:text-sm">Social Insurance Total</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-xs md:text-sm">-{formatCurrency((result.deductions.healthInsurance + result.deductions.nursingCareInsurance + result.deductions.pensionInsurance + result.deductions.unemploymentInsurance) / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-xs md:text-sm">-{formatCurrency((result.deductions.healthInsurance + result.deductions.nursingCareInsurance + result.deductions.pensionInsurance + result.deductions.unemploymentInsurance) / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.healthInsurance + result.deductions.nursingCareInsurance + result.deductions.pensionInsurance + result.deductions.unemploymentInsurance)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Total Deductions */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                      <td className="py-3 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-sm md:text-base">Total Deductions</td>
-                      <td className="text-right py-3 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-sm md:text-base">-{formatCurrency(result.deductions.total / 52)}</td>
-                      <td className="text-right py-3 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-sm md:text-base">-{formatCurrency(result.deductions.total / 12)}</td>
-                      <td className="text-right py-3 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-sm md:text-base">-{formatCurrency(result.deductions.total)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Net Pay */}
-            <div className="mt-8 bg-[#020806] rounded-lg p-4 space-y-2">
-              <div className="flex justify-between">
-                <span className="text-[#2ecc71]">Weekly Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual / 52)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#2ecc71]">Monthly Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.monthly)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#2ecc71]">Annual Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual)}</span>
-              </div>
-            </div>
-
-            <p className="mt-4 text-xs text-[#2ecc71]/50">
-              * This is an estimate. For exact calculations, please consult a tax professional.
-            </p>
-          </div>
-        )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Germany Tax Calculator",
+              "alternateName": "German Salary Calculator",
+              "description": "Calculate your take home pay in Germany with our free, accurate tax calculator. Includes Lohnsteuer, social security contributions, church tax, and solidarity surcharge for 2026.",
+              "url": "https://gluub.com/calculator/germany",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "EUR"
+              },
+              "featureList": [
+                "German income tax (Lohnsteuer) calculation",
+                "Social security contributions",
+                "Church tax calculation",
+                "Solidarity surcharge",
+                "Take home pay breakdown"
+              ],
+              "browserRequirements": "Requires JavaScript"
+            }),
+          }}
+        />
       </main>
     </div>
   );

@@ -594,6 +594,39 @@ setLoading(false);
             </div>
           )}
         </div>
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "UK Tax Calculator",
+              "alternateName": "UK Take Home Pay Calculator",
+              "description": "Calculate your take home pay in the UK with our free, accurate tax calculator. Includes income tax, National Insurance, and student loan calculations for 2025-2026.",
+              "url": "https://gluub.com/calculator/uk",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "GBP"
+              },
+              "featureList": [
+                "UK income tax calculation",
+                "National Insurance calculation",
+                "Student loan repayment",
+                "Pension contributions",
+                "Take home pay breakdown"
+              ],
+              "browserRequirements": "Requires JavaScript",
+              "softwareHelp": {
+                "@type": "FAQPage",
+                "mainEntity": []
+              }
+            }),
+          }}
+        />
       </main>
     </div>
   );

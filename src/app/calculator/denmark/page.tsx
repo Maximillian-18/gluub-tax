@@ -628,6 +628,35 @@ export default function DenmarkCalculator() {
             </p>
           </div>
         )}
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Denmark Tax Calculator",
+              "alternateName": "Danish Salary Calculator",
+              "description": "Calculate your take home pay in Denmark with our free, accurate tax calculator. Includes ATP, pension contributions, and AM-contribution for 2025-2026.",
+              "url": "https://gluub.com/calculator/denmark",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "DKK"
+              },
+              "featureList": [
+                "Danish income tax calculation",
+                "ATP pension contribution",
+                "Labor market contribution (AM-contribution)",
+                "Pension contributions",
+                "Take home pay breakdown"
+              ],
+              "browserRequirements": "Requires JavaScript"
+            }),
+          }}
+        />
       </main>
     </div>
   );
