@@ -387,7 +387,7 @@ export default function GermanyCalculator() {
             <div className="mb-8">
               <div className="bg-[#020806] rounded-lg p-4 space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-[#2ecc71]">Personal Allowance</span>
+                  <span className="text-[#2ecc71]">Basic Allowance</span>
                   <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.personalAllowance)}</span>
                 </div>
                 <div className="flex justify-between items-center border-t border-[#2ecc71]/20 pt-2">
