@@ -15,6 +15,7 @@ interface CustomSelectProps {
   options: SelectOption[];
   placeholder?: string;
   className?: string;
+  position?: "bottom" | "top";
 }
 
 export function CustomSelect({
@@ -23,6 +24,7 @@ export function CustomSelect({
   options,
   placeholder = "Select...",
   className,
+  position = "bottom",
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
@@ -65,8 +67,9 @@ export function CustomSelect({
       {isOpen && (
         <div
           className={cn(
-            "absolute z-50 w-full mt-1 py-1 bg-[#020806] border border-[#2ecc71] rounded-md shadow-lg",
-            "max-h-60 overflow-y-auto"
+            "absolute z-50 w-full py-1 bg-[#020806] border border-[#2ecc71] rounded-md shadow-lg",
+            "max-h-60 overflow-y-auto",
+            position === "bottom" ? "mt-1 top-full" : "mb-1 bottom-full"
           )}
         >
           {options.map((option) => (

@@ -3,6 +3,7 @@ import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { Analytics } from "@vercel/analytics/next";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
@@ -79,8 +80,10 @@ export default function RootLayout({
         style={{ fontFamily: 'var(--font-noto-sans)' }}
         className={`${notoSans.variable} font-sans antialiased`}
       >
-        <Navigation />
-        {children}
+        <TooltipProvider>
+          <Navigation />
+          {children}
+        </TooltipProvider>
         <Analytics />
       </body>
     </html>

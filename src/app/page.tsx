@@ -16,6 +16,8 @@ export default function Home() {
       router.push("/calculator/germany");
     } else if (selectedCountry === "denmark") {
       router.push("/calculator/denmark");
+    } else if (selectedCountry === "usa") {
+      router.push("/calculator/usa");
     }
   };
 
@@ -39,6 +41,7 @@ export default function Home() {
                 { value: "united-kingdom", label: "United Kingdom" },
                 { value: "germany", label: "Germany" },
                 { value: "denmark", label: "Denmark" },
+                { value: "usa", label: "United States" },
               ]}
               placeholder="Select country"
               className="w-[220px]"

@@ -6,16 +6,21 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
-import { Plus, X } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Plus, X, HelpCircle } from "lucide-react";
 import Link from "next/link";
 
 const numberInputClass = "flex-1 px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
 const smallNumberInputClass = "w-[140px] px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
-const customAllowanceInputClass = "flex-1 px-3 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-base font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
+const customAllowanceInputClass = "flex-1 px-3 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
-const customAllowanceAmountClass = "w-[120px] px-3 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-base font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
+const customAllowanceAmountClass = "w-[100px] px-3 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
 const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === "-" || e.key === "e" || e.key === "E" || e.key === "ArrowUp" || e.key === "ArrowDown") {
@@ -157,9 +162,9 @@ setLoading(false);
 
   return (
     <div className="min-h-screen bg-[#020806] text-[#2ecc71] flex flex-col">
-      <main className="flex-1 flex flex-col items-center px-4 md:px-8 py-8 md:py-12 pt-20 md:pt-24 gap-8 md:gap-12">
+      <main className="flex-1 px-4 md:px-8 py-8 md:py-12 pt-20 md:pt-24 max-w-2xl mx-auto w-full">
         {/* Form Section */}
-        <div className="w-full max-w-2xl">
+        <div className="w-full">
             <div className="mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-2">
               2026 UK Take Home Pay Calculator
@@ -234,13 +239,24 @@ setLoading(false);
 
             {/* Tax Code */}
             <div>
-              <label className="block text-lg font-bold text-[#2ecc71] mb-2">
+              <label className="block text-lg font-bold text-[#2ecc71] mb-2 flex items-center gap-2">
                 Tax Code
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link href="/info/uk#tax-codes" className="inline-flex items-center text-sm text-[#2ecc71]/60 hover:text-[#2ecc71] underline">
+                      <HelpCircle className="w-4 h-4" />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={10} className="bg-[#020806] border border-[#2ecc71]/30 text-[#2ecc71] text-xs max-w-[320px] p-3 hidden md:block">
+                    <p className="leading-normal">This is NOT a required field.</p>
+                    <p className="leading-normal text-[#2ecc71]/70 mt-1">Click to find out more about tax codes.</p>
+                  </TooltipContent>
+                </Tooltip>
+                <span className="text-xs text-[#2ecc71]/60 md:hidden">Not required - click for info</span>
               </label>
               <Input
                 value={taxCode}
                 onChange={(e) => setTaxCode(e.target.value)}
-                placeholder="e.g., 1257L"
                 className="w-[180px] px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71]"
               />
             </div>
@@ -313,8 +329,20 @@ setLoading(false);
 
             {/* Student Loan */}
             <div>
-              <label className="block text-lg font-bold text-[#2ecc71] mb-2">
+              <label className="block text-lg font-bold text-[#2ecc71] mb-2 flex items-center gap-2">
                 Student Loan Plan
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link href="/info/uk#student-loan" className="inline-flex items-center text-sm text-[#2ecc71]/60 hover:text-[#2ecc71] underline">
+                      <HelpCircle className="w-4 h-4" />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={10} className="bg-[#020806] border border-[#2ecc71]/30 text-[#2ecc71] text-xs max-w-[320px] p-3 hidden md:block">
+                    <p className="leading-normal">This is NOT a required field.</p>
+                    <p className="leading-normal text-[#2ecc71]/70 mt-1">Click to find out more about student loans.</p>
+                  </TooltipContent>
+                </Tooltip>
+                <span className="text-xs text-[#2ecc71]/60 md:hidden">Not required - click for info</span>
               </label>
               <CustomSelect
                 value={studentLoan}
@@ -407,8 +435,7 @@ setLoading(false);
                   <Button
                     type="button"
                     onClick={() => removeCustomAllowance(allowance.id)}
-                    variant="ghost"
-                    className="text-[#2ecc71] hover:bg-[#2ecc71]/10"
+                    className="h-9 px-2 border border-[#2ecc71] text-[#2ecc71] bg-transparent hover:bg-[#2ecc71]/20 active:bg-[#2ecc71]/30"
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -428,9 +455,9 @@ setLoading(false);
         </div>
 
         {/* Results Section */}
-        <div className="w-full max-w-2xl">
+        <div className="w-full">
           {result && (
-            <div className="bg-[#0a1f15] rounded-xl p-6">
+            <div className="mt-12 bg-[#0a1f15] rounded-xl p-6">
               <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
                 Your Tax Breakdown
               </h2>

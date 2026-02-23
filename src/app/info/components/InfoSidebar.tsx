@@ -31,6 +31,7 @@ const menuStructure: MenuSection[] = [
       { label: "2026 Tax Brackets", href: "/info/uk#tax-brackets", sectionId: "tax-brackets" },
       { label: "Personal Allowance", href: "/info/uk#personal-allowance", sectionId: "personal-allowance" },
       { label: "National Insurance", href: "/info/uk#national-insurance", sectionId: "national-insurance" },
+      { label: "Student Loan", href: "/info/uk#student-loan", sectionId: "student-loan" },
       { label: "Tax Codes", href: "/info/uk#tax-codes", sectionId: "tax-codes" },
       { label: "Reading Your Payslip", href: "/info/uk#payslip", sectionId: "payslip" },
       { label: "Scotland", href: "/info/uk#scotland", sectionId: "scotland" },
@@ -55,6 +56,11 @@ const menuStructure: MenuSection[] = [
     href: "/info/denmark",
     items: undefined,
   },
+  {
+    label: "United States",
+    href: "/info/usa",
+    items: undefined,
+  },
 ];
 
 interface InfoSidebarProps {
@@ -76,6 +82,8 @@ export default function InfoSidebar({ scrollSpyActiveId }: InfoSidebarProps) {
       setActiveSection("Germany");
     } else if (pathname.startsWith("/info/denmark")) {
       setActiveSection("Denmark");
+    } else if (pathname.startsWith("/info/usa")) {
+      setActiveSection("United States");
     }
   }, [pathname]);
 

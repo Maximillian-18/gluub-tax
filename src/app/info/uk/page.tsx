@@ -8,6 +8,7 @@ const sectionIds = [
   "tax-brackets",
   "personal-allowance",
   "national-insurance",
+  "student-loan",
   "tax-codes",
   "payslip",
   "scotland",
@@ -225,7 +226,96 @@ function UKTaxContent() {
         </div>
       </section>
 
-      {/* Section 5: Tax Codes */}
+      {/* Section 5: Student Loans */}
+      <section id="student-loan" className="mb-16 scroll-mt-28">
+        <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
+          Student Loan Repayment
+        </h2>
+        
+        <div className="space-y-6">
+          <p className="text-[#2ecc71]/80 leading-relaxed">
+            If you took out a student loan to pay for university tuition fees or living costs, you'll repay it through your salary once you start working and earn above a certain threshold. The amount you repay is based on your income, not the size of your loan.
+          </p>
+
+          <h3 className="text-xl font-semibold text-[#2ecc71] mt-8 mb-4">How Student Loan Repayment Works</h3>
+          <p className="text-[#2ecc71]/80 leading-relaxed mb-4">
+            Your employer will automatically deduct student loan repayments from your salary if you earn above the threshold for your loan plan. The repayment amount is:
+          </p>
+          <ul className="space-y-2 text-[#2ecc71]/70 ml-4">
+            <li>• <strong>9%</strong> of your income above the threshold for undergraduate loans (Plan 1, 2, 4, 5)</li>
+            <li>• <strong>6%</strong> of your income above the threshold for postgraduate loans (Plan 3)</li>
+          </ul>
+          <p className="text-[#2ecc71]/80 leading-relaxed mt-4">
+            Repayments are automatically deducted along with your income tax and National Insurance.
+          </p>
+
+          <h3 className="text-xl font-semibold text-[#2ecc71] mt-8 mb-4">2025-2026 Student Loan Plans</h3>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse border border-[#2ecc71]/30">
+              <thead>
+                <tr className="bg-[#2ecc71]/10">
+                  <th className="border border-[#2ecc71]/30 px-4 py-3 text-left text-[#2ecc71] font-semibold">Plan</th>
+                  <th className="border border-[#2ecc71]/30 px-4 py-3 text-left text-[#2ecc71] font-semibold">Who it's for</th>
+                  <th className="border border-[#2ecc71]/30 px-4 py-3 text-left text-[#2ecc71] font-semibold">Threshold</th>
+                  <th className="border border-[#2ecc71]/30 px-4 py-3 text-left text-[#2ecc71] font-semibold">Rate</th>
+                </tr>
+              </thead>
+              <tbody className="text-[#2ecc71]/80">
+                <tr>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Plan 1</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">England/Wales pre-2012, Northern Ireland</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">£25,000/year</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">9%</td>
+                </tr>
+                <tr className="bg-[#2ecc71]/5">
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Plan 2</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">England 2012-2023</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">£27,295/year</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">9%</td>
+                </tr>
+                <tr>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Plan 3</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Postgraduate (Master's/Doctoral)</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">£21,000/year</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">6%</td>
+                </tr>
+                <tr className="bg-[#2ecc71]/5">
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Plan 4</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Scotland</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">£31,395/year</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">9%</td>
+                </tr>
+                <tr>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">Plan 5</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">England post-Aug 2023</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">£25,000/year</td>
+                  <td className="border border-[#2ecc71]/30 px-4 py-3">9%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-xl font-semibold text-[#2ecc71] mt-8 mb-4">When Are Loans Written Off?</h3>
+          <p className="text-[#2ecc71]/80 leading-relaxed mb-4">
+            Student loans aren't lifelong debts - they're written off after a set number of years:
+          </p>
+          <ul className="space-y-2 text-[#2ecc71]/70 ml-4">
+            <li>• <strong>Plan 1:</strong> 25 years after leaving course</li>
+            <li>• <strong>Plan 2:</strong> 30 years after leaving course</li>
+            <li>• <strong>Plan 3:</strong> 30 years after leaving course</li>
+            <li>• <strong>Plan 4:</strong> 30 years after leaving course</li>
+            <li>• <strong>Plan 5:</strong> 40 years after leaving course</li>
+          </ul>
+
+          <h3 className="text-xl font-semibold text-[#2ecc71] mt-8 mb-4">Which Plan Am I On?</h3>
+          <p className="text-[#2ecc71]/80 leading-relaxed">
+            Your plan depends on <strong>when</strong> you started your course and <strong>where</strong> you lived when you took out the loan. You can find out which plan you're on by checking your <a href="https://www.gov.uk/student-finance" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">Student Finance account</a> or your annual tax summary.
+          </p>
+        </div>
+      </section>
+
+      {/* Section 6: Tax Codes */}
       <section id="tax-codes" className="mb-16 scroll-mt-28">
         <h2 className="text-2xl font-bold text-[#2ecc71] mb-6 pb-2 border-b border-[#2ecc71]/20">
           Understanding Tax Codes
