@@ -6,10 +6,12 @@ import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const [selectedCountry, setSelectedCountry] = useState("united-kingdom");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const router = useRouter();
 
   const handleCalculate = () => {
+    if (!selectedCountry) return;
+    
     if (selectedCountry === "united-kingdom") {
       router.push("/calculator/uk");
     } else if (selectedCountry === "germany") {
@@ -38,6 +40,7 @@ export default function Home() {
               value={selectedCountry}
               onValueChange={setSelectedCountry}
               options={[
+                { value: "", label: "Select country" },
                 { value: "united-kingdom", label: "United Kingdom" },
                 { value: "germany", label: "Germany" },
                 { value: "denmark", label: "Denmark" },

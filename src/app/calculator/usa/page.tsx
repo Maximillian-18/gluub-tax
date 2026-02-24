@@ -489,7 +489,7 @@ export default function USACalculator() {
                       onValueChange={(value) => updateItemizedDeduction(deduction.id, "type", value)}
                       options={ITEMIZED_DEDUCTION_TYPES}
                       placeholder="Select type"
-                      className="w-[200px]"
+                      className="w-[240px]"
                       position="top"
                     />
                     <Input
