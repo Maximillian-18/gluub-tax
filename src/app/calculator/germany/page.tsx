@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { CustomSelect } from "@/components/CustomSelect";
 import { SearchableSelect } from "@/components/SearchableSelect";
 import { Button } from "@/components/ui/button";
+import { GERMAN_STATES } from "./data/states";
 
 interface CalculationResult {
   breakdown: {
@@ -38,25 +39,6 @@ const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
   }
 };
 
-const GERMAN_STATES = [
-  { value: "baden-wurttemberg", label: "Baden-Württemberg", rate: 8 },
-  { value: "bayern", label: "Bayern", rate: 8 },
-  { value: "berlin", label: "Berlin", rate: 9 },
-  { value: "brandenburg", label: "Brandenburg", rate: 9 },
-  { value: "bremen", label: "Bremen", rate: 9 },
-  { value: "hamburg", label: "Hamburg", rate: 9 },
-  { value: "hessen", label: "Hessen", rate: 9 },
-  { value: "mecklenburg-vorpommern", label: "Mecklenburg-Vorpommern", rate: 9 },
-  { value: "niedersachsen", label: "Niedersachsen", rate: 9 },
-  { value: "nordrhein-westfalen", label: "Nordrhein-Westfalen", rate: 9 },
-  { value: "rheinland-pfalz", label: "Rheinland-Pfalz", rate: 9 },
-  { value: "saarland", label: "Saarland", rate: 9 },
-  { value: "sachsen", label: "Sachsen", rate: 9 },
-  { value: "sachsen-anhalt", label: "Sachsen-Anhalt", rate: 9 },
-  { value: "schleswig-holstein", label: "Schleswig-Holstein", rate: 9 },
-  { value: "thuringen", label: "Thüringen", rate: 9 },
-];
-
 export default function GermanyCalculator() {
   const [grossIncome, setGrossIncome] = useState("");
   const [incomeFrequency, setIncomeFrequency] = useState("per-year");
@@ -71,6 +53,7 @@ export default function GermanyCalculator() {
   const [taxYear, setTaxYear] = useState("2026");
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const [buttonPressed, setButtonPressed] = useState(false);
 
   const handleCalculate = async (fromEnter?: boolean) => {
@@ -100,6 +83,9 @@ export default function GermanyCalculator() {
 
       const data = await response.json();
       setResult(data);
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
     } catch (error) {
       console.error("Calculation error:", error);
     }
@@ -337,7 +323,7 @@ export default function GermanyCalculator() {
 
         {/* Results */}
         {result && (
-          <div className="mt-12 bg-[#0a1f15] rounded-xl p-6">
+          <div ref={resultsRef} className="mt-12 bg-[#0a1f15] rounded-xl p-6" style={{ scrollMarginTop: "100px" }}>
             <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
               Your Tax Breakdown
             </h2>

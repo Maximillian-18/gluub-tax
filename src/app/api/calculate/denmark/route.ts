@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { TAX_BRACKETS } from "../../../calculator/denmark/data/taxBrackets";
 
 interface DenmarkCalculateRequest {
   grossIncome: number;
@@ -12,20 +13,6 @@ interface DenmarkCalculateRequest {
   personalPensionType: "amount" | "percentage";
   personalPensionValue: number;
 }
-
-const TAX_BRACKETS_2026 = {
-  personalAllowance: 54100,
-  middleTaxThreshold: 641200,
-  topTaxThreshold: 777900,
-  topTopTaxThreshold: 2592700,
-};
-
-const TAX_BRACKETS_2025 = {
-  personalAllowance: 51600,
-  middleTaxThreshold: 614900,
-  topTaxThreshold: 752300,
-  topTopTaxThreshold: 2468200,
-};
 
 function normalizeToAnnual(amount: number, frequency: "year" | "month"): number {
   return frequency === "month" ? amount * 12 : amount;
@@ -46,10 +33,10 @@ function calculateDanishTax(annualGross: number, pensionType: string, pensionVal
   churchTax: number;
   total: number;
 } {
-  const taxBrackets = taxYear === "2025" ? TAX_BRACKETS_2025 : TAX_BRACKETS_2026;
+  const year = (taxYear === "2025" ? "2025" : "2026") as "2025" | "2026";
+  const taxBrackets = TAX_BRACKETS[year];
   const personalAllowanceAmount = personalAllowance ? taxBrackets.personalAllowance : 0;
   
-  // Company Pension (ATP)
   let annualPension = 0;
   
   if (pensionType === "default") {
@@ -60,7 +47,6 @@ function calculateDanishTax(annualGross: number, pensionType: string, pensionVal
     annualPension = annualGross * (pensionValue / 100);
   }
 
-  // Personal Pension Contribution
   let personalPension = 0;
   if (personalPensionType === "amount") {
     personalPension = personalPensionValue * 12;
@@ -71,7 +57,6 @@ function calculateDanishTax(annualGross: number, pensionType: string, pensionVal
   const grossAfterPension = Math.max(0, annualGross - annualPension - personalPension);
   const taxableIncome = Math.max(0, grossAfterPension - personalAllowanceAmount);
   
-  // Income after AM-bidrag (8% labour market contribution) - used for middle/top/toptop thresholds
   const incomeAfterAM = annualGross * 0.92;
 
   const bottomTax = taxableIncome * 0.1201;

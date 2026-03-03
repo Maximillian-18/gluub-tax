@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle, Plus, X } from "lucide-react";
+import { US_STATES } from "./data/states";
+import { ITEMIZED_DEDUCTION_TYPES } from "./data/itemizedDeductionTypes";
 
 const numberInputClass = "flex-1 px-4 py-2 bg-transparent border-[#2ecc71] text-[#2ecc71] text-lg font-medium placeholder:text-[#2ecc71]/50 focus:ring-[#2ecc71] focus:border-[#2ecc71] [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none";
 
@@ -72,68 +74,6 @@ interface CalculationResult {
   };
 }
 
-const STATES = [
-  { value: "AL", label: "Alabama" },
-  { value: "AK", label: "Alaska" },
-  { value: "AZ", label: "Arizona" },
-  { value: "AR", label: "Arkansas" },
-  { value: "CA", label: "California" },
-  { value: "CO", label: "Colorado" },
-  { value: "CT", label: "Connecticut" },
-  { value: "DE", label: "Delaware" },
-  { value: "DC", label: "District of Columbia" },
-  { value: "FL", label: "Florida" },
-  { value: "GA", label: "Georgia" },
-  { value: "HI", label: "Hawaii" },
-  { value: "ID", label: "Idaho" },
-  { value: "IL", label: "Illinois" },
-  { value: "IN", label: "Indiana" },
-  { value: "IA", label: "Iowa" },
-  { value: "KS", label: "Kansas" },
-  { value: "KY", label: "Kentucky" },
-  { value: "LA", label: "Louisiana" },
-  { value: "ME", label: "Maine" },
-  { value: "MD", label: "Maryland" },
-  { value: "MA", label: "Massachusetts" },
-  { value: "MI", label: "Michigan" },
-  { value: "MN", label: "Minnesota" },
-  { value: "MS", label: "Mississippi" },
-  { value: "MO", label: "Missouri" },
-  { value: "MT", label: "Montana" },
-  { value: "NE", label: "Nebraska" },
-  { value: "NV", label: "Nevada" },
-  { value: "NH", label: "New Hampshire" },
-  { value: "NJ", label: "New Jersey" },
-  { value: "NM", label: "New Mexico" },
-  { value: "NY", label: "New York" },
-  { value: "NC", label: "North Carolina" },
-  { value: "ND", label: "North Dakota" },
-  { value: "OH", label: "Ohio" },
-  { value: "OK", label: "Oklahoma" },
-  { value: "OR", label: "Oregon" },
-  { value: "PA", label: "Pennsylvania" },
-  { value: "RI", label: "Rhode Island" },
-  { value: "SC", label: "South Carolina" },
-  { value: "SD", label: "South Dakota" },
-  { value: "TN", label: "Tennessee" },
-  { value: "TX", label: "Texas" },
-  { value: "UT", label: "Utah" },
-  { value: "VT", label: "Vermont" },
-  { value: "VA", label: "Virginia" },
-  { value: "WA", label: "Washington" },
-  { value: "WV", label: "West Virginia" },
-  { value: "WI", label: "Wisconsin" },
-  { value: "WY", label: "Wyoming" },
-];
-
-const ITEMIZED_DEDUCTION_TYPES = [
-  { value: "mortgage", label: "Mortgage Interest" },
-  { value: "charity", label: "Charitable Donations" },
-  { value: "state_tax", label: "State Income Tax" },
-  { value: "property_tax", label: "Property Tax" },
-  { value: "medical", label: "Medical Expenses" },
-];
-
 interface ItemizedDeduction {
   id: number;
   type: string;
@@ -155,6 +95,7 @@ export default function USACalculator() {
   const [buttonPressed, setButtonPressed] = useState(false);
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const savedDeductionType = localStorage.getItem("usa-deduction-type");
@@ -212,6 +153,9 @@ export default function USACalculator() {
 
       const data = await response.json();
       setResult(data);
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
     } catch (error) {
       console.error("Calculation error:", error);
     }
@@ -265,7 +209,7 @@ export default function USACalculator() {
               <SearchableSelect
                 value={state}
                 onValueChange={setState}
-                options={STATES}
+                options={US_STATES}
                 placeholder="Select State"
                 className="w-[180px]"
               />
@@ -523,7 +467,7 @@ export default function USACalculator() {
           </form>
 
           {result && (
-            <div className="mt-12 bg-[#0a1f15] rounded-xl p-6">
+            <div ref={resultsRef} className="mt-12 bg-[#0a1f15] rounded-xl p-6" style={{ scrollMarginTop: "100px" }}>
               <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
                 Your Tax Breakdown
               </h2>

@@ -164,6 +164,7 @@ export default function DenmarkCalculator() {
   const [personalPensionValue, setPersonalPensionValue] = useState("");
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const [buttonPressed, setButtonPressed] = useState(false);
 
   const handleCalculate = async (fromEnter?: boolean) => {
@@ -192,6 +193,9 @@ export default function DenmarkCalculator() {
 
       const data = await response.json();
       setResult(data);
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
     } catch (error) {
       console.error("Calculation error:", error);
     }
@@ -417,7 +421,7 @@ export default function DenmarkCalculator() {
 
         {/* Results */}
         {result && (
-          <div className="mt-12 bg-[#0a1f15] rounded-xl p-6">
+          <div ref={resultsRef} className="mt-12 bg-[#0a1f15] rounded-xl p-6" style={{ scrollMarginTop: "100px" }}>
             <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
               Your Tax Breakdown
             </h2>

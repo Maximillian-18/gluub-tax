@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { TAX_BANDS_ENGLAND_2025, TAX_BANDS_SCOTLAND_2025, TaxBand } from "../../calculator/uk/data/taxBands";
+import { NI_BANDS_2025 } from "../../calculator/uk/data/niBands";
+import { STUDENT_LOAN_THRESHOLDS } from "../../calculator/uk/data/studentLoan";
 
 interface CalculateRequest {
   grossIncome: number;
@@ -15,42 +18,6 @@ interface CalculateRequest {
   excludeNI: boolean;
   customAllowances: { name: string; amount: number }[];
 }
-
-interface TaxBand {
-  min: number;
-  max: number | null;
-  rate: number;
-}
-
-const TAX_BANDS_ENGLAND_2025: TaxBand[] = [
-  { min: 0, max: 12570, rate: 0 },
-  { min: 12570, max: 50270, rate: 20 },
-  { min: 50270, max: 125140, rate: 40 },
-  { min: 125140, max: null, rate: 45 },
-];
-
-const TAX_BANDS_SCOTLAND_2025: TaxBand[] = [
-  { min: 0, max: 12570, rate: 0 },
-  { min: 12570, max: 14732, rate: 19 },
-  { min: 14732, max: 21303, rate: 20 },
-  { min: 21303, max: 43662, rate: 21 },
-  { min: 43662, max: 75000, rate: 42 },
-  { min: 75000, max: 125140, rate: 45 },
-  { min: 125140, max: null, rate: 48 },
-];
-
-const NI_BANDS_2025 = [
-  { min: 0, max: 12570, rate: 0 },
-  { min: 12570, max: 50270, rate: 8 },
-  { min: 50270, max: null, rate: 2 },
-];
-
-const STUDENT_LOAN_THRESHOLDS = {
-  plan1: 24990,
-  plan2: 28478,
-  plan4: 28478,
-  postgrad: 21000,
-};
 
 function normalizeToAnnual(amount: number, frequency: "year" | "month" | "week"): number {
   switch (frequency) {
@@ -94,7 +61,6 @@ function calculateTaxOnBand(taxableIncome: number, bands: TaxBand[]): number {
   let tax = 0;
   let incomeRemaining = taxableIncome;
 
-  // Skip the first band (personal allowance at 0%)
   for (let i = 1; i < bands.length; i++) {
     if (incomeRemaining <= 0) break;
 
@@ -103,7 +69,6 @@ function calculateTaxOnBand(taxableIncome: number, bands: TaxBand[]): number {
     const bandMax = band.max ?? Infinity;
     const bandRate = band.rate;
 
-    // Calculate how much of the taxable income falls into this band
     const bandStart = bandMin;
     const bandEnd = bandMax;
     const bandSize = bandEnd - bandStart;
@@ -130,7 +95,6 @@ function calculateNI(annualIncome: number): number {
     const bandMax = band.max ?? Infinity;
     const bandRate = band.rate;
 
-    // Calculate income within this band
     const incomeAtBandStart = Math.max(cumulativeIncome, band.min);
     const incomeAtBandEnd = Math.min(annualIncome, bandMax);
 

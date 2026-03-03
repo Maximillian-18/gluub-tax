@@ -1,0 +1,18 @@
+export const GERMAN_STATES = [
+  { value: "baden-wurttemberg", label: "Baden-Württemberg", rate: 8 },
+  { value: "bayern", label: "Bayern", rate: 8 },
+  { value: "berlin", label: "Berlin", rate: 9 },
+  { value: "brandenburg", label: "Brandenburg", rate: 9 },
+  { value: "bremen", label: "Bremen", rate: 9 },
+  { value: "hamburg", label: "Hamburg", rate: 9 },
+  { value: "hessen", label: "Hessen", rate: 9 },
+  { value: "mecklenburg-vorpommern", label: "Mecklenburg-Vorpommern", rate: 9 },
+  { value: "niedersachsen", label: "Niedersachsen", rate: 9 },
+  { value: "nordrhein-westfalen", label: "Nordrhein-Westfalen", rate: 9 },
+  { value: "rheinland-pfalz", label: "Rheinland-Pfalz", rate: 9 },
+  { value: "saarland", label: "Saarland", rate: 9 },
+  { value: "sachsen", label: "Sachsen", rate: 9 },
+  { value: "sachsen-anhalt", label: "Sachsen-Anhalt", rate: 9 },
+  { value: "schleswig-holstein", label: "Schleswig-Holstein", rate: 9 },
+  { value: "thuringen", label: "Thüringen", rate: 9 },
+];
