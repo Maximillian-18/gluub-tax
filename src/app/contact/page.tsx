@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -94,12 +93,6 @@ export default function Contact() {
             <p className="text-[#2ecc71]/80 mb-6">
               We've received your message and will get back to you soon.
             </p>
-            <Link 
-              href="/"
-              className="inline-block px-8 py-4 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
-            >
-              Back to Calculator
-            </Link>
           </div>
         ) : (
           <div className="rounded-xl p-6 md:p-8 border-2 border-[#2ecc71]">
@@ -170,16 +163,6 @@ export default function Contact() {
             </div>
           </div>
         )}
-
-        {/* Back Links */}
-        <div className="flex justify-center gap-4 mt-8">
-          <Link 
-            href="/"
-            className="px-6 py-3 bg-[#f1c40f] text-[#020806] text-base font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
-          >
-            Calculate Taxes
-          </Link>
-        </div>
 
       </main>
     </div>
