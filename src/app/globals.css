@@ -126,8 +126,23 @@
   }
 }
 
-/* Prevent Radix UI from adding padding-right when dropdown opens */
-html body[data-scroll-locked] {
-  padding-right: 0 !important;
-  overflow: auto !important;
+/* Prevent Radix UI scroll lock from causing layout shifts */
+/* Allow background scrolling when dialog is open */
+body:has([data-dialog-open="true"]) {
+  overflow: auto;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1f15 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2ecc71 !important;
+  border-radius: 4px !important;
 }

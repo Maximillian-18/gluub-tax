@@ -7,6 +7,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CustomSelect } from "@/components/CustomSelect";
 import { SearchableSelect } from "@/components/SearchableSelect";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface CalculationResult {
   breakdown: {
@@ -162,8 +168,9 @@ export default function DenmarkCalculator() {
   const [pensionValue, setPensionValue] = useState("");
   const [personalPensionType, setPersonalPensionType] = useState<"amount" | "percentage">("amount");
   const [personalPensionValue, setPersonalPensionValue] = useState("");
-  const [result, setResult] = useState<CalculationResult | null>(null);
+const [result, setResult] = useState<CalculationResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
   const [buttonPressed, setButtonPressed] = useState(false);
 
@@ -191,11 +198,9 @@ export default function DenmarkCalculator() {
         }),
       });
 
-      const data = await response.json();
+const data = await response.json();
       setResult(data);
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
+      setShowResults(true);
     } catch (error) {
       console.error("Calculation error:", error);
     }
@@ -409,229 +414,216 @@ export default function DenmarkCalculator() {
           </div>
 
           {/* Calculate Button */}
-          <Button 
-            type="button"
-            disabled={loading}
-            onClick={() => handleCalculate(false)}
-            className={`px-6 py-3 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : ''}`}
-          >
-            Calculate
-          </Button>
+            <div className="flex gap-4">
+              <Button 
+                type="button"
+                disabled={loading}
+                onClick={() => handleCalculate(false)}
+                className={`px-6 py-3 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : ''}`}
+              >
+                Calculate
+              </Button>
+              {result && (
+                <button 
+                  type="button"
+                  onClick={() => setShowResults(true)}
+                  className="text-lg text-[#2ecc71] underline hover:text-[#2ecc71]/80 transition-all"
+                >
+                  View Results
+                </button>
+              )}
+            </div>
         </div>
 
-        {/* Results */}
-        {result && (
-          <div ref={resultsRef} className="mt-12 bg-[#0a1f15] rounded-xl p-6" style={{ scrollMarginTop: "100px" }}>
-            <h2 className="text-2xl font-bold text-[#2ecc71] mb-6">
-              Your Tax Breakdown
-            </h2>
+        {/* Results Dialog */}
+        <Dialog open={showResults} onOpenChange={(open) => {
+            if (!open) setShowResults(false);
+          }}>
+          {result && (
+          <DialogContent 
+            showCloseButton={false}
+            className="top-[50%] left-[50%] translate-x-[-50%] translate-y-[-45%] w-[95vw] xl:w-[66vw] max-h-[90vh] xl:max-h-[85vh] bg-[#0a1f15] border-[#2ecc71]/30 p-3 xl:p-6 overflow-y-auto"
+            data-dialog-open={showResults}
+          >
+            <div>
+              <DialogHeader>
+                <DialogTitle className="text-xl md:text-2xl font-bold text-[#2ecc71] mb-4">
+                  Your Tax Breakdown
+                </DialogTitle>
+              </DialogHeader>
 
-            {/* Summary */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="bg-[#020806] rounded-lg p-4">
-                <p className="text-xs md:text-sm text-[#2ecc71]/70 mb-1">Annual Gross</p>
-                <p className="text-xl md:text-2xl font-bold text-[#2ecc71]">
-                  {formatCurrency(result.breakdown.grossSalary)}
-                </p>
-              </div>
-              <div className="bg-[#020806] rounded-lg p-4">
-                <p className="text-xs md:text-sm text-[#2ecc71]/70 mb-1">Annual Net</p>
-                <p className="text-xl md:text-2xl font-bold text-[#2ecc71]">
-                  {formatCurrency(result.netIncome.annual)}
-                </p>
-              </div>
-            </div>
-
-            {/* Income Breakdown */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Income Breakdown</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <thead>
-                    <tr className="border-b border-[#2ecc71]/30">
-                      <th className="text-left py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Item</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Weekly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Monthly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">Gross Salary</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.grossSalary / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.grossSalary / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.grossSalary)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/10">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">- Company Pension (ATP)</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.pensionContribution)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/10">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">- Personal Pension</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.personalPensionContribution / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.personalPensionContribution / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.breakdown.personalPensionContribution)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                      <td className="py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">Total Gross</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.totalGross / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.totalGross / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#2ecc71] whitespace-nowrap text-xs md:text-sm font-bold">{formatCurrency(result.breakdown.totalGross)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Personal Allowance & Taxable Income */}
-            {result.breakdown.personalAllowance > 0 && (
-              <div className="mb-8">
-                <div className="bg-[#020806] rounded-lg p-4 space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#2ecc71]">Personal Allowance</span>
-                    <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.personalAllowance)}</span>
+              {/* Main 2-column layout */}
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 xl:gap-6">
+                
+                {/* LEFT COLUMN - Summary Cards */}
+                <div className="xl:col-span-5 space-y-3">
+                  {/* Annual Gross */}
+                  <div className="bg-[#020806] rounded-lg p-3 md:p-4">
+                    <p className="text-sm font-bold text-[#2ecc71] mb-1">Annual Gross</p>
+                    <p className="text-lg md:text-xl font-bold text-[#2ecc71] truncate">
+                      {formatCurrency(result!.breakdown.totalGross)}
+                    </p>
                   </div>
-                  <div className="flex justify-between items-center border-t border-[#2ecc71]/20 pt-2">
-                    <span className="text-[#2ecc71] font-bold">Taxable Income</span>
-                    <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.breakdown.taxableIncome)}</span>
+
+                  {/* Tax Info */}
+                  <div className="bg-[#020806] rounded-lg p-3 md:p-4 space-y-1">
+                    <p className="text-sm font-bold text-[#2ecc71] mb-1">Tax Info</p>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#2ecc71]/70">Personal Allowance</span>
+                      <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.breakdown.personalAllowance)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#2ecc71]/70">Taxable</span>
+                      <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.breakdown.taxableIncome)}</span>
+                    </div>
+                  </div>
+
+                  {/* Net Income Breakdown */}
+                  <div className="bg-[#020806] rounded-lg p-3 md:p-4 space-y-1">
+                    <p className="text-sm font-bold text-[#2ecc71] mb-1">Net Income</p>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#2ecc71]/70">Monthly</span>
+                      <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.netIncome.monthly)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#2ecc71]/70">Annual</span>
+                      <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.netIncome.annual)}</span>
+                    </div>
+                  </div>
+
+                  {/* Disclaimer */}
+                  <p className="text-xs text-[#2ecc71]/50 pt-2">
+                    * This is an estimate. For exact calculations, please consult a tax professional.
+                  </p>
+                </div>
+
+                {/* RIGHT COLUMN - Tables */}
+                <div className="xl:col-span-7 space-y-4">
+                  {/* Income Breakdown Table */}
+                  <div>
+                    <h3 className="text-base font-bold text-[#2ecc71] mb-2">Income Breakdown</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs md:text-sm">
+                        <thead>
+                          <tr className="border-b border-[#2ecc71]/30">
+                            <th className="text-left py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[120px]">Item</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Weekly</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Monthly</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Annual</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[120px]">Gross Salary</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[100px]">{formatCurrency(result!.breakdown.grossSalary / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[100px]">{formatCurrency(result!.breakdown.grossSalary / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[100px]">{formatCurrency(result!.breakdown.grossSalary)}</td>
+                          </tr>
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">ATP Pension</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.pensionContribution / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.pensionContribution / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.pensionContribution)}</td>
+                          </tr>
+                          {result!.breakdown.personalPensionContribution > 0 && (
+                            <tr className="border-b border-[#2ecc71]/20">
+                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Personal Pension</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.personalPensionContribution / 52)}</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.personalPensionContribution / 12)}</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.personalPensionContribution)}</td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Deductions Table */}
+                  <div>
+                    <h3 className="text-base font-bold text-[#2ecc71] mb-2">Taxes</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs md:text-sm">
+                        <thead>
+                          <tr className="border-b border-[#2ecc71]/30">
+                            <th className="text-left py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[120px]">Tax</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Weekly</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Monthly</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Annual</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Bottom Tax</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.bottomTax / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.bottomTax / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.bottomTax)}</td>
+                          </tr>
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Middle Tax</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.middleTax / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.middleTax / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.middleTax)}</td>
+                          </tr>
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Top Tax</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTax / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTax / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTax)}</td>
+                          </tr>
+                          {result!.deductions.topTopTax > 0 && (
+                            <tr className="border-b border-[#2ecc71]/20">
+                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Top Top Tax</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTopTax / 52)}</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTopTax / 12)}</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTopTax)}</td>
+                            </tr>
+                          )}
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Municipal Tax</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.municipalTax / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.municipalTax / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.municipalTax)}</td>
+                          </tr>
+                          <tr className="border-b border-[#2ecc71]/20">
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Labour Market</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.labourMarketTax / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.labourMarketTax / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.labourMarketTax)}</td>
+                          </tr>
+                          {result!.deductions.churchTax > 0 && (
+                            <tr className="border-b border-[#2ecc71]/20">
+                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Church Tax</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.churchTax / 52)}</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.churchTax / 12)}</td>
+                              <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.churchTax)}</td>
+                            </tr>
+                          )}
+                          <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
+                            <td className="py-1.5 px-2 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap w-[120px]">Total Tax</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.total / 52)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.total / 12)}</td>
+                            <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.total)}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
-            )}
 
-            {/* Deductions - Income Tax */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Income Tax</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <thead>
-                    <tr className="border-b border-[#2ecc71]/30">
-                      <th className="text-left py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Tax</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Weekly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Monthly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Bottom Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.bottomTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.bottomTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.bottomTax)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Middle Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.middleTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.middleTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.middleTax)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Top Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.topTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.topTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.topTax)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Top-Top Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.topTopTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.topTopTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.topTopTax)}</td>
-                    </tr>
-                  </tbody>
-                </table>
+              {/* Return Button - Bottom Left */}
+              <div className="flex justify-start mt-4">
+                <Button 
+                  onClick={() => setShowResults(false)}
+                  className="px-5 py-2 bg-[#f1c40f] text-[#020806] text-base font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
+                >
+                  Return
+                </Button>
               </div>
             </div>
-
-            {/* Deductions - Local Taxes */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <h3 className="text-lg font-bold text-[#2ecc71] mb-4">Local Taxes</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <thead>
-                    <tr className="border-b border-[#2ecc71]/30">
-                      <th className="text-left py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Tax</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Weekly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Monthly</th>
-                      <th className="text-right py-2 px-1 md:px-3 text-[#2ecc71] font-medium text-xs md:text-sm whitespace-nowrap">Annual</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Municipal Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.municipalTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.municipalTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.municipalTax)}</td>
-                    </tr>
-                    <tr className="border-b border-[#2ecc71]/20">
-                      <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Labour Market Tax</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.labourMarketTax / 52)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.labourMarketTax / 12)}</td>
-                      <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.labourMarketTax)}</td>
-                    </tr>
-                    {result.deductions.churchTax > 0 && (
-                      <tr className="border-b border-[#2ecc71]/20">
-                        <td className="py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">Church Tax</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.churchTax / 52)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.churchTax / 12)}</td>
-                        <td className="text-right py-2 px-1 md:px-3 text-[#e74c3c] whitespace-nowrap text-xs md:text-sm">-{formatCurrency(result.deductions.churchTax)}</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Total Deductions */}
-            <div className="mb-8 -mx-2 md:mx-0">
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs md:text-sm">
-                  <tbody>
-                    <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                      <td className="py-3 px-1 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap text-sm md:text-base">Total Deductions</td>
-                      <td className="text-right py-3 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-sm md:text-base">-{formatCurrency(result.deductions.total / 52)}</td>
-                      <td className="text-right py-3 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-sm md:text-base">-{formatCurrency(result.deductions.total / 12)}</td>
-                      <td className="text-right py-3 px-1 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap text-sm md:text-base">-{formatCurrency(result.deductions.total)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Effective Tax Rate */}
-            <div className="mb-8 bg-[#020806] rounded-lg p-4">
-              <div className="flex justify-between items-center">
-                <span className="text-[#2ecc71] font-bold">Effective Tax Rate</span>
-                <span className="text-lg md:text-xl font-bold text-[#f1c40f]">
-                  {result.breakdown.totalGross > 0 
-                    ? ((result.deductions.total / result.breakdown.grossSalary) * 100).toFixed(1)
-                    : 0}%
-                </span>
-              </div>
-            </div>
-
-            {/* Net Pay */}
-            <div className="mt-8 bg-[#020806] rounded-lg p-4 space-y-2">
-              <div className="flex justify-between">
-                <span className="text-[#2ecc71]">Weekly Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual / 52)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#2ecc71]">Monthly Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual / 12)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#2ecc71]">Annual Net</span>
-                <span className="text-lg md:text-xl font-bold text-[#2ecc71]">{formatCurrency(result.netIncome.annual)}</span>
-              </div>
-            </div>
-
-            <p className="mt-4 text-xs text-[#2ecc71]/50">
-              * This is an estimate. For exact calculations, please consult a tax professional.
-            </p>
-          </div>
-        )}
+          </DialogContent>
+          )}
+        </Dialog>
 
         <script
           type="application/ld+json"
