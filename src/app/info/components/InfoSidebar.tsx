@@ -54,12 +54,26 @@ const menuStructure: MenuSection[] = [
   {
     label: "Denmark",
     href: "/info/denmark",
-    items: undefined,
+    items: [
+      { label: "Tax Basics", href: "/info/denmark#basics", sectionId: "basics" },
+      { label: "2026 Tax Brackets", href: "/info/denmark#tax-brackets", sectionId: "tax-brackets" },
+      { label: "Municipal Tax", href: "/info/denmark#municipal-tax", sectionId: "municipal-tax" },
+      { label: "ATP Pension", href: "/info/denmark#atp-pension", sectionId: "atp-pension" },
+      { label: "Labour Market", href: "/info/denmark#labour-market", sectionId: "labour-market" },
+      { label: "Church Tax", href: "/info/denmark#church-tax", sectionId: "church-tax" },
+    ],
   },
   {
     label: "United States",
     href: "/info/usa",
-    items: undefined,
+    items: [
+      { label: "Tax Basics", href: "/info/usa#basics", sectionId: "basics" },
+      { label: "2026 Tax Brackets", href: "/info/usa#tax-brackets", sectionId: "tax-brackets" },
+      { label: "FICA", href: "/info/usa#fica", sectionId: "fica" },
+      { label: "State Taxes", href: "/info/usa#state-taxes", sectionId: "state-taxes" },
+      { label: "Deductions", href: "/info/usa#deductions", sectionId: "deductions" },
+      { label: "Tax Credits", href: "/info/usa#tax-credits", sectionId: "tax-credits" },
+    ],
   },
 ];
 
@@ -70,7 +84,15 @@ interface InfoSidebarProps {
 export default function InfoSidebar({ scrollSpyActiveId }: InfoSidebarProps) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>("General Tax Information");
+  const [activeSection, setActiveSection] = useState<string | null>(() => {
+    // Initialize with correct section based on current pathname
+    if (pathname === "/info") return "General Tax Information";
+    if (pathname.startsWith("/info/uk")) return "United Kingdom";
+    if (pathname.startsWith("/info/germany")) return "Germany";
+    if (pathname.startsWith("/info/denmark")) return "Denmark";
+    if (pathname.startsWith("/info/usa")) return "United States";
+    return "General Tax Information";
+  });
 
   // Auto-expand section based on current page
   useEffect(() => {

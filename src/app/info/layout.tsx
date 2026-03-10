@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tax Information | Gluub",
-  description: "Comprehensive guides to income tax, tax brackets, and deductions for UK, Germany, and Denmark.",
+  description: "Comprehensive guides to income tax, tax brackets, and deductions for UK, Germany, Denmark, and USA.",
 };
 
 export default function InfoLayout({
