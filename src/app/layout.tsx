@@ -3,6 +3,7 @@ import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const notoSans = Noto_Sans({
@@ -85,6 +86,7 @@ export default function RootLayout({
           {children}
         </TooltipProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
