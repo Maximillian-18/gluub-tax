@@ -413,7 +413,7 @@ export default function Home() {
               Example Calculations
             </h2>
 
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-8 lg:gap-4 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-8 lg:gap-4 items-start justify-items-center lg:justify-items-start">
               {/* Left Column - Feature Text */}
               <div className="hidden lg:block lg:pt-[100px]">
                 <div
@@ -440,20 +440,50 @@ export default function Home() {
                   className="w-full"
                   setApi={handleCarouselApiChange}
                 >
-                  <div className="relative">
-                    <CarouselContent className="-ml-2 md:-ml-4">
+                  {/* Desktop arrows - hidden on mobile */}
+                  <div className="hidden lg:block">
+                    <div className="relative">
+                      <CarouselContent className="-ml-2 md:-ml-4">
+                        {examples.map((example) => (
+                          <CarouselItem key={example.name} className="pl-2 md:pl-4">
+                            <div className="h-full w-[320px] md:w-[380px] lg:w-[360px] mx-auto">
+                              {renderExample(example)}
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      {/* Left Arrow */}
+                      <CarouselPrevious className="absolute left-16 top-1/2 -translate-y-1/2 w-10 h-10 border-[#2ecc71]/30 bg-[#0a1f15] text-[#2ecc71] hover:bg-[#0f2920] hover:border-[#2ecc71]/60" />
+                      {/* Right Arrow */}
+                      <CarouselNext className="absolute right-16 top-1/2 -translate-y-1/2 w-10 h-10 border-[#2ecc71]/30 bg-[#0a1f15] text-[#2ecc71] hover:bg-[#0f2920] hover:border-[#2ecc71]/60" />
+                    </div>
+                  </div>
+                  {/* Mobile arrows - smaller below card */}
+                  <div className="lg:hidden flex justify-center gap-8 mt-4">
+                    <button
+                      onClick={() => carouselApi?.scrollPrev()}
+                      className="text-[#2ecc71] text-2xl hover:text-[#2ecc71]/70"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      onClick={() => carouselApi?.scrollNext()}
+                      className="text-[#2ecc71] text-2xl hover:text-[#2ecc71]/70"
+                    >
+                      ›
+                    </button>
+                  </div>
+                  {/* Mobile card only */}
+                  <div className="lg:hidden px-8">
+                    <CarouselContent>
                       {examples.map((example) => (
-                        <CarouselItem key={example.name} className="pl-2 md:pl-4">
-                          <div className="h-full w-[320px] md:w-[380px] lg:w-[360px] mx-auto">
+                        <CarouselItem key={example.name}>
+                          <div className="h-full w-[320px] mx-auto">
                             {renderExample(example)}
                           </div>
                         </CarouselItem>
                       ))}
                     </CarouselContent>
-                    {/* Left Arrow */}
-                    <CarouselPrevious className="absolute left-16 top-1/2 -translate-y-1/2 w-10 h-10 border-[#2ecc71]/30 bg-[#0a1f15] text-[#2ecc71] hover:bg-[#0f2920] hover:border-[#2ecc71]/60" />
-                    {/* Right Arrow */}
-                    <CarouselNext className="absolute right-16 top-1/2 -translate-y-1/2 w-10 h-10 border-[#2ecc71]/30 bg-[#0a1f15] text-[#2ecc71] hover:bg-[#0f2920] hover:border-[#2ecc71]/60" />
                   </div>
                 </Carousel>
               </div>
