@@ -3,11 +3,7 @@ export default function FAQ() {
   const faqs = [
     {
       q: "Is this calculator free?",
-      a: "Yes! Completely free to use, no sign-up required. We show ads on the site to help support the costs of keeping this service free for everyone."
-    },
-    {
-      q: "Does Ad-block affect my experience?",
-      a: "Nope! Feel free to use an ad-blocker. But if you can disable it to help support the site, we'd really appreciate it!"
+      a: "Yes! Completely free to use, although we may add premium features in the future."
     },
     {
       q: "How accurate is it?",
@@ -23,7 +19,7 @@ export default function FAQ() {
     },
     {
       q: "What countries do you support?",
-      a: "We currently support the UK, Germany, and Denmark, with more countries coming soon!"
+      a: "We currently support the UK, USA, Germany, and Denmark!"
     }
   ];
 
@@ -38,7 +34,7 @@ export default function FAQ() {
           </h1>
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-[#0a1f15] rounded-xl p-6 border border-[#2ecc71]/20">
+              <div key={index} className="rounded-xl p-6 border border-[#2ecc71]/50">
                 <h2 className="font-bold text-lg mb-2">Q: {faq.q}</h2>
                 <p className="text-[#2ecc71]/80">A: {faq.a}</p>
               </div>
