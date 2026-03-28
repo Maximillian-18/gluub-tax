@@ -568,7 +568,13 @@ customAllowances: customAllowances.map(a => ({ name: a.name, amount: a.amount })
                   <div>
                     <h3 className="text-base font-bold text-[#2ecc71] mb-2">Income Breakdown</h3>
                     <div className="overflow-x-auto">
-                      <table className="w-full text-xs md:text-sm">
+                      <table className="w-full text-xs md:text-sm table-fixed">
+                        <colgroup>
+                          <col className="w-[120px]" />
+                          <col className="w-[100px]" />
+                          <col className="w-[100px]" />
+                          <col className="w-[100px]" />
+                        </colgroup>
                         <thead>
                           <tr className="border-b border-[#2ecc71]/30">
                             <th className="text-left py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[120px]">Item</th>
@@ -605,15 +611,13 @@ customAllowances: customAllowances.map(a => ({ name: a.name, amount: a.amount })
                   <div>
                     <h3 className="text-base font-bold text-[#2ecc71] mb-2">Deductions</h3>
                     <div className="overflow-x-auto">
-                      <table className="w-full text-xs md:text-sm">
-                        <thead>
-                          <tr className="border-b border-[#2ecc71]/30">
-                            <th className="text-left py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[120px]">Deduction</th>
-                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Weekly</th>
-                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Monthly</th>
-                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Annual</th>
-                          </tr>
-                        </thead>
+                      <table className="w-full text-xs md:text-sm table-fixed">
+                        <colgroup>
+                          <col className="w-[120px]" />
+                          <col className="w-[100px]" />
+                          <col className="w-[100px]" />
+                          <col className="w-[100px]" />
+                        </colgroup>
                         <tbody>
                           <tr className="border-b border-[#2ecc71]/20">
                             <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Income Tax</td>

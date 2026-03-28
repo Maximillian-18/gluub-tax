@@ -166,6 +166,7 @@ export async function POST(request: NextRequest) {
       netIncome: {
         annual: Math.round(netAnnual * 100) / 100,
         monthly: Math.round((netAnnual / 12) * 100) / 100,
+        weekly: Math.round((netAnnual / 52) * 100) / 100,
       },
     });
   } catch (error) {
