@@ -1,0 +1,73 @@
+{
+  "title": "German Income Tax Calculator",
+  "subtitle": "Calculate your net salary in Germany",
+  "labels": {
+    "grossSalary": "Gross Salary",
+    "frequency": "Frequency",
+    "taxYear": "Tax Year",
+    "taxCategory": "Tax Category",
+    "state": "State",
+    "healthInsurance": "Health Insurance",
+    "supplementaryContribution": "Supplementary Contribution (%)",
+    "pensionInsurance": "Pension Insurance",
+    "unemploymentInsurance": "Unemployment Insurance",
+    "municipality": "Municipality",
+    "churchTax": "Church Tax",
+    "personalAllowance": "Personal Allowance",
+    "hasChildren": "Do you have children?"
+  },
+  "placeholders": {
+    "enterSalary": "Enter gross salary",
+    "selectOption": "Select option",
+    "selectTaxCategory": "Select tax category",
+    "selectState": "Select state",
+    "selectMunicipality": "Select municipality",
+    "selectHealthInsurance": "Select health insurance",
+    "selectPensionType": "Select pension type"
+  },
+  "options": {
+    "perYear": "Per year",
+    "perMonth": "Per month",
+    "statutory": "Statutory (GKV)",
+    "private": "Private (PKV)",
+    "none": "None / Exempt",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "taxCategories": {
+    "cat1": "Category I - Single",
+    "cat2": "Category II - Single parent",
+    "cat3": "Category III - Married (high income)",
+    "cat4": "Category IV - Married (equal income)",
+    "cat5": "Category V - Married (low income)",
+    "cat6": "Category VI - Second job"
+  },
+  "results": {
+    "title": "Your Tax Breakdown",
+    "annualGross": "Annual Gross",
+    "taxInfo": "Tax Info",
+    "personalAllowance": "Personal Allowance",
+    "taxable": "Taxable",
+    "netIncome": "Net Income",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "incomeBreakdown": "Income Breakdown",
+    "deductions": "Deductions",
+    "taxes": "Taxes",
+    "socialSecurity": "Social Security Contributions",
+    "grossSalary": "Gross Salary",
+    "incomeTax": "Income Tax",
+    "solidaritySurcharge": "Solidarity Surcharge",
+    "churchTax": "Church Tax",
+    "healthInsurance": "Health Insurance",
+    "nursingCare": "Nursing Care Insurance",
+    "pensionInsurance": "Pension Insurance",
+    "unemploymentInsurance": "Unemployment Insurance",
+    "totalDeductions": "Total Deductions",
+    "return": "Return"
+  },
+  "calculate": "Calculate",
+  "viewResults": "View Results",
+  "disclaimer": "This is an estimate. For exact calculations, please consult a tax professional."
+}

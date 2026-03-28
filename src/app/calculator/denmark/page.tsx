@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { I18nProvider, useI18n } from "@/contexts/I18nContext";
 
 interface CalculationResult {
   breakdown: {
@@ -158,7 +159,45 @@ const preventNegative = (e: React.KeyboardEvent<HTMLInputElement>) => {
   }
 };
 
+function LanguageToggle() {
+  const { language, setLanguage } = useI18n();
+  
+  return (
+    <div className="flex gap-1">
+      <button
+        onClick={() => setLanguage("en")}
+        className={`px-3 py-1.5 text-sm rounded transition-colors ${
+          language === "en" 
+            ? "bg-[#2ecc71] text-[#020806] font-bold" 
+            : "bg-[#0a1f15] text-[#2ecc71] hover:bg-[#2ecc71]/20"
+        }`}
+      >
+        EN
+      </button>
+      <button
+        onClick={() => setLanguage("da")}
+        className={`px-3 py-1.5 text-sm rounded transition-colors ${
+          language === "da" 
+            ? "bg-[#2ecc71] text-[#020806] font-bold" 
+            : "bg-[#0a1f15] text-[#2ecc71] hover:bg-[#2ecc71]/20"
+        }`}
+      >
+        DA
+      </button>
+    </div>
+  );
+}
+
 export default function DenmarkCalculator() {
+  return (
+    <I18nProvider defaultLanguage="da" calculator="denmark">
+      <DenmarkCalculatorContent />
+    </I18nProvider>
+  );
+}
+
+function DenmarkCalculatorContent() {
+  const { t } = useI18n();
   const [grossIncome, setGrossIncome] = useState("");
   const [incomeFrequency, setIncomeFrequency] = useState("per-year");
   const [taxYear, setTaxYear] = useState("2026");
@@ -235,20 +274,25 @@ const data = await response.json();
       <main className="flex-1 px-4 md:px-8 py-8 md:py-12 pt-20 md:pt-24 max-w-2xl mx-auto w-full">
         
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-2">
-            Danish Income Tax Calculator
-          </h1>
-          <p className="text-[#2ecc71]/70 text-sm">
-            Calculate your net salary in Denmark (2026)
-          </p>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <h1 className="text-2xl md:text-3xl font-bold text-[#2ecc71] mb-2">
+              {t("title")}
+            </h1>
+            <p className="text-[#2ecc71]/70 text-sm">
+              {t("subtitle")} ({taxYear})
+            </p>
+          </div>
+          <div className="flex-shrink-0 pt-1">
+            <LanguageToggle />
+          </div>
         </div>
 
         <div className="space-y-8">
           {/* Gross Income */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Gross Income (DKK)
+              {t("labels.grossSalary")} (DKK)
             </label>
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
@@ -263,17 +307,17 @@ const data = await response.json();
                     handleCalculate(true);
                   }
                 }}
-                placeholder="Enter gross income"
+                placeholder={t("placeholders.enterSalary")}
                 className={numberInputClass}
               />
               <CustomSelect
                 value={incomeFrequency}
                 onValueChange={setIncomeFrequency}
                 options={[
-                  { value: "per-year", label: "Per year" },
-                  { value: "per-month", label: "Per month" },
+                  { value: "per-year", label: t("options.perYear") },
+                  { value: "per-month", label: t("options.perMonth") },
                 ]}
-                placeholder="Period"
+                placeholder={t("labels.frequency")}
                 className="w-full sm:w-[140px]"
               />
             </div>
@@ -282,7 +326,7 @@ const data = await response.json();
           {/* Tax Year */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Tax Year
+              {t("labels.taxYear")}
             </label>
             <CustomSelect
               value={taxYear}
@@ -291,7 +335,7 @@ const data = await response.json();
                 { value: "2026", label: "2026" },
                 { value: "2025", label: "2025" },
               ]}
-              placeholder="Tax year"
+              placeholder={t("labels.taxYear")}
               className="w-[180px]"
             />
           </div>
@@ -304,20 +348,20 @@ const data = await response.json();
               className="w-5 h-5 border-[#2ecc71] data-[state=checked]:bg-[#f1c40f] data-[state=checked]:text-[#020806] data-[state=checked]:border-[#f1c40f]"
             />
             <label className="text-base text-[#2ecc71]">
-              Personal allowance ({taxYear === "2025" ? "51,600" : "54,100"} DKK)
+              {t("labels.personalAllowance")} ({taxYear === "2025" ? "51,600" : "54,100"} DKK)
             </label>
           </div>
 
           {/* Municipality Tax Rate */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Municipality
+              {t("labels.municipality")}
             </label>
             <SearchableSelect
               value={municipality}
               onValueChange={setMunicipality}
               options={municipalities}
-              placeholder="Select municipality"
+              placeholder={t("placeholders.selectMunicipality")}
               className="w-full md:w-[280px]"
               formatSelected={(option) => {
                 const rate = municipalityRates[option.value];
@@ -334,14 +378,14 @@ const data = await response.json();
               className="w-5 h-5 border-[#2ecc71] data-[state=checked]:bg-[#2ecc71] data-[state=checked]:border-[#2ecc71]"
             />
             <label className="text-base text-[#2ecc71]">
-              Church Tax (Kirkeskat)
+              {t("labels.churchTax")}
             </label>
           </div>
 
           {/* Company Pension */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Company Pension Contribution (ATP) {pensionType === "percentage" ? "(% of salary)" : pensionType === "amount" ? "(DKK/month)" : "(99 kr/month)"}
+              {t("labels.pensionType")} {pensionType === "percentage" ? t("labels.pensionPercentage") : pensionType === "amount" ? t("labels.pensionAmount") : "(99 kr/måned)"}
             </label>
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               <Tabs value={pensionType} onValueChange={(v) => setPensionType(v as "default" | "percentage" | "amount")} className="w-auto">
@@ -350,19 +394,19 @@ const data = await response.json();
                     value="default" 
                     className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
                   >
-                    Default
+                    {t("options.default")}
                   </TabsTrigger>
                   <TabsTrigger 
                     value="percentage" 
                     className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
                   >
-                    Percentage
+                    {t("options.percentage")}
                   </TabsTrigger>
                   <TabsTrigger 
                     value="amount"
                     className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
                   >
-                    Amount
+                    {t("options.amount")}
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
@@ -373,7 +417,7 @@ const data = await response.json();
                   value={pensionValue}
                   onChange={(e) => setPensionValue(e.target.value)}
                   onKeyDown={preventNegative}
-                  placeholder={pensionType === "percentage" ? "e.g., 5" : "Enter monthly amount"}
+                  placeholder={pensionType === "percentage" ? "f.eks. 5" : t("placeholders.enterSalary")}
                   className={numberInputClass}
                 />
               )}
@@ -383,7 +427,7 @@ const data = await response.json();
           {/* Personal Pension */}
           <div>
             <label className="block text-lg font-bold text-[#2ecc71] mb-2">
-              Personal Pension Contribution {personalPensionType === "percentage" ? "(% of salary)" : "(DKK/month)"}
+              {t("labels.personalPension")} {personalPensionType === "percentage" ? t("labels.personalPensionPercentage") : t("labels.personalPensionAmount")}
             </label>
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               <Tabs value={personalPensionType} onValueChange={(v) => setPersonalPensionType(v as "percentage" | "amount")} className="w-auto">
@@ -392,13 +436,13 @@ const data = await response.json();
                     value="percentage" 
                     className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
                   >
-                    Percentage
+                    {t("options.percentage")}
                   </TabsTrigger>
                   <TabsTrigger 
                     value="amount"
                     className="px-3 md:px-4 py-2 text-sm md:text-base text-[#2ecc71] data-[state=active]:bg-[#2ecc71] data-[state=active]:text-[#020806]"
                   >
-                    Amount
+                    {t("options.amount")}
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
@@ -408,7 +452,7 @@ const data = await response.json();
                 value={personalPensionValue}
                 onChange={(e) => setPersonalPensionValue(e.target.value)}
                 onKeyDown={preventNegative}
-                placeholder={personalPensionType === "percentage" ? "e.g., 5" : "Enter monthly amount"}
+                placeholder={personalPensionType === "percentage" ? "f.eks. 5" : t("placeholders.enterSalary")}
                 className={numberInputClass}
               />
             </div>
@@ -422,7 +466,7 @@ const data = await response.json();
                 onClick={() => handleCalculate(false)}
                 className={`px-6 py-3 bg-[#f1c40f] text-[#020806] text-lg font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg ${buttonPressed ? 'scale-95 bg-[#e67e22]' : ''}`}
               >
-                Calculate
+                {t("calculate")}
               </Button>
               {result && (
                 <button 
@@ -430,7 +474,7 @@ const data = await response.json();
                   onClick={() => setShowResults(true)}
                   className="text-lg text-[#2ecc71] underline hover:text-[#2ecc71]/80 transition-all"
                 >
-                  View Results
+                  {t("viewResults")}
                 </button>
               )}
             </div>
@@ -449,7 +493,7 @@ const data = await response.json();
             <div>
               <DialogHeader>
                 <DialogTitle className="text-xl md:text-2xl font-bold text-[#2ecc71] mb-4">
-                  Your Tax Breakdown
+                  {t("results.title")}
                 </DialogTitle>
               </DialogHeader>
 
@@ -460,7 +504,7 @@ const data = await response.json();
                 <div className="xl:col-span-5 space-y-3">
                   {/* Annual Gross */}
                   <div className="bg-[#020806] rounded-lg p-3 md:p-4">
-                    <p className="text-sm font-bold text-[#2ecc71] mb-1">Annual Gross</p>
+                    <p className="text-sm font-bold text-[#2ecc71] mb-1">{t("results.annualGross")}</p>
                     <p className="text-lg md:text-xl font-bold text-[#2ecc71] truncate">
                       {formatCurrency(result!.breakdown.totalGross)}
                     </p>
@@ -468,37 +512,37 @@ const data = await response.json();
 
                   {/* Tax Info */}
                   <div className="bg-[#020806] rounded-lg p-3 md:p-4 space-y-1">
-                    <p className="text-sm font-bold text-[#2ecc71] mb-1">Tax Info</p>
+                    <p className="text-sm font-bold text-[#2ecc71] mb-1">{t("results.taxInfo")}</p>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#2ecc71]/70">Personal Allowance</span>
+                      <span className="text-[#2ecc71]/70">{t("results.personalAllowance")}</span>
                       <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.breakdown.personalAllowance)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#2ecc71]/70">Taxable</span>
+                      <span className="text-[#2ecc71]/70">{t("results.taxable")}</span>
                       <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.breakdown.taxableIncome)}</span>
                     </div>
                   </div>
 
                   {/* Net Income Breakdown */}
                   <div className="bg-[#020806] rounded-lg p-3 md:p-4 space-y-1">
-                    <p className="text-sm font-bold text-[#2ecc71] mb-1">Net Income</p>
+                    <p className="text-sm font-bold text-[#2ecc71] mb-1">{t("results.netIncome")}</p>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#2ecc71]/70">Weekly</span>
+                      <span className="text-[#2ecc71]/70">{t("results.weekly")}</span>
                       <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.netIncome.weekly)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#2ecc71]/70">Monthly</span>
+                      <span className="text-[#2ecc71]/70">{t("results.monthly")}</span>
                       <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.netIncome.monthly)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#2ecc71]/70">Annual</span>
+                      <span className="text-[#2ecc71]/70">{t("results.annual")}</span>
                       <span className="text-[#2ecc71] font-bold truncate">{formatCurrency(result!.netIncome.annual)}</span>
                     </div>
                   </div>
 
                   {/* Disclaimer */}
                   <p className="text-xs text-[#2ecc71]/50 pt-2">
-                    * This is an estimate. For exact calculations, please consult a tax professional.
+                    * {t("disclaimer")}
                   </p>
                 </div>
 
@@ -506,7 +550,7 @@ const data = await response.json();
                 <div className="xl:col-span-7 space-y-4">
                   {/* Income Breakdown Table */}
                   <div>
-                    <h3 className="text-base font-bold text-[#2ecc71] mb-2">Income Breakdown</h3>
+                    <h3 className="text-base font-bold text-[#2ecc71] mb-2">{t("results.incomeBreakdown")}</h3>
                     <div className="overflow-x-auto">
                       <table className="w-full text-xs md:text-sm table-fixed">
                         <colgroup>
@@ -518,27 +562,27 @@ const data = await response.json();
                         <thead>
                           <tr className="border-b border-[#2ecc71]/30">
                             <th className="text-left py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[120px]">Item</th>
-                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Weekly</th>
-                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Monthly</th>
-                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">Annual</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">{t("results.weekly")}</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">{t("results.monthly")}</th>
+                            <th className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] font-medium whitespace-nowrap w-[100px]">{t("results.annual")}</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[120px]">Gross Salary</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[120px]">{t("results.grossSalary")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[100px]">{formatCurrency(result!.breakdown.grossSalary / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[100px]">{formatCurrency(result!.breakdown.grossSalary / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#2ecc71] whitespace-nowrap w-[100px]">{formatCurrency(result!.breakdown.grossSalary)}</td>
                           </tr>
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">ATP Pension</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.atpPension")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.pensionContribution / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.pensionContribution / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.pensionContribution)}</td>
                           </tr>
                           {result!.breakdown.personalPensionContribution > 0 && (
                             <tr className="border-b border-[#2ecc71]/20">
-                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Personal Pension</td>
+                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.personalPension")}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.personalPensionContribution / 52)}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.personalPensionContribution / 12)}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.breakdown.personalPensionContribution)}</td>
@@ -551,7 +595,7 @@ const data = await response.json();
 
                   {/* Deductions Table */}
                   <div>
-                    <h3 className="text-base font-bold text-[#2ecc71] mb-2">Taxes</h3>
+                    <h3 className="text-base font-bold text-[#2ecc71] mb-2">{t("results.taxes")}</h3>
                     <div className="overflow-x-auto">
                       <table className="w-full text-xs md:text-sm table-fixed">
                         <colgroup>
@@ -562,53 +606,53 @@ const data = await response.json();
                         </colgroup>
                         <tbody>
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Bottom Tax</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.bottomTax")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.bottomTax / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.bottomTax / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.bottomTax)}</td>
                           </tr>
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Middle Tax</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.middleTax")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.middleTax / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.middleTax / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.middleTax)}</td>
                           </tr>
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Top Tax</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.topTax")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTax / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTax / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTax)}</td>
                           </tr>
                           {result!.deductions.topTopTax > 0 && (
                             <tr className="border-b border-[#2ecc71]/20">
-                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Top Top Tax</td>
+                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.topTopTax")}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTopTax / 52)}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTopTax / 12)}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.topTopTax)}</td>
                             </tr>
                           )}
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Municipal Tax</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.municipalTax")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.municipalTax / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.municipalTax / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.municipalTax)}</td>
                           </tr>
                           <tr className="border-b border-[#2ecc71]/20">
-                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Labour Market</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.labourMarket")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.labourMarketTax / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.labourMarketTax / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.labourMarketTax)}</td>
                           </tr>
                           {result!.deductions.churchTax > 0 && (
                             <tr className="border-b border-[#2ecc71]/20">
-                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">Church Tax</td>
+                              <td className="py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[120px]">{t("results.churchTax")}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.churchTax / 52)}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.churchTax / 12)}</td>
                               <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.churchTax)}</td>
                             </tr>
                           )}
                           <tr className="border-b border-[#2ecc71]/30 bg-[#2ecc71]/10">
-                            <td className="py-1.5 px-2 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap w-[120px]">Total Tax</td>
+                            <td className="py-1.5 px-2 md:px-3 text-[#2ecc71] font-bold whitespace-nowrap w-[120px]">{t("results.totalTax")}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.total / 52)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.total / 12)}</td>
                             <td className="text-right py-1.5 px-2 md:px-3 text-[#e74c3c] font-bold whitespace-nowrap w-[100px]">-{formatCurrency(result!.deductions.total)}</td>
@@ -626,7 +670,7 @@ const data = await response.json();
                   onClick={() => setShowResults(false)}
                   className="px-5 py-2 bg-[#f1c40f] text-[#020806] text-base font-bold rounded-lg hover:bg-[#f39c12] transition-all duration-300 shadow-lg"
                 >
-                  Return
+                  {t("results.return")}
                 </Button>
               </div>
             </div>

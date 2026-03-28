@@ -1,0 +1,69 @@
+{
+  "title": "Deutsche Einkommensteuer-Berechnung",
+  "subtitle": "Berechnen Sie Ihren Nettolohn in Deutschland",
+  "labels": {
+    "grossSalary": "Bruttogehalt",
+    "frequency": "Zeitraum",
+    "taxYear": "Steuerjahr",
+    "taxCategory": "Steuerklasse (Steuerklasse)",
+    "state": "Bundesland",
+    "healthInsurance": "Krankenversicherung",
+    "supplementaryContribution": "Zusatzbeitrag (%)",
+    "pensionInsurance": "Rentenversicherung",
+    "unemploymentInsurance": "Arbeitslosenversicherung",
+    "churchTax": "Kirchensteuer",
+    "hasChildren": "Haben Sie Kinder?"
+  },
+  "placeholders": {
+    "enterSalary": "Bruttogehalt eingeben",
+    "selectOption": "Option auswählen",
+    "selectTaxCategory": "Steuerklasse auswählen",
+    "selectState": "Bundesland auswählen",
+    "selectHealthInsurance": "Krankenversicherung auswählen"
+  },
+  "options": {
+    "perYear": "Pro Jahr",
+    "perMonth": "Pro Monat",
+    "statutory": "Gesetzlich (GKV)",
+    "private": "Privat (PKV)",
+    "none": "Keine / Befreit",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "taxCategories": {
+    "cat1": "Klasse I - Ledig",
+    "cat2": "Klasse II - Alleinerziehend",
+    "cat3": "Klasse III - Verheiratet (Alleinverdiener)",
+    "cat4": "Klasse IV - Verheiratet (beide verdienen)",
+    "cat5": "Klasse V - Verheiratet (Niedrigverdiener)",
+    "cat6": "Klasse VI - Zweitjob"
+  },
+  "results": {
+    "title": "Ihre Steuerübersicht",
+    "annualGross": "Bruttojahreseinkommen",
+    "taxInfo": "Steuerinfo",
+    "personalAllowance": "Grundfreibetrag",
+    "taxable": "Zu versteuern",
+    "netIncome": "Nettogehalt",
+    "weekly": "Wöchentlich",
+    "monthly": "Monatlich",
+    "annual": "Jährlich",
+    "incomeBreakdown": "Einkommensübersicht",
+    "deductions": "Abgaben",
+    "taxes": "Steuern",
+    "socialSecurity": "Sozialversicherungsbeiträge",
+    "grossSalary": "Bruttogehalt",
+    "incomeTax": "Einkommensteuer",
+    "solidaritySurcharge": "Solidaritätszuschlag",
+    "churchTax": "Kirchensteuer",
+    "healthInsurance": "Krankenversicherung",
+    "nursingCare": "Pflegeversicherung",
+    "pensionInsurance": "Rentenversicherung",
+    "unemploymentInsurance": "Arbeitslosenversicherung",
+    "totalDeductions": "Gesamtabgaben",
+    "return": "Zurück"
+  },
+  "calculate": "Berechnen",
+  "viewResults": "Ergebnisse anzeigen",
+  "disclaimer": "Dies ist eine Schätzung. Für exakte Berechnungen konsultieren Sie bitte einen Steuerberater."
+}
